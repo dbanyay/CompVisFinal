@@ -10,7 +10,9 @@ Imf = loadImages(); % Imf is saved to a .mat file to be faster
 
 %% Feature detection and extraction of SIFT points
 
-[frames, descs] = extractSIFT(Imf);
+%[frames, descs] = extractSIFT(Imf); % using vl_feat
+
+[frames, descs] = loadHessaff(); % using preprocessed Hessian SIFT descriptors
 
 %load('descs')
 %load('frames')
