@@ -10,6 +10,12 @@ load('Imf') % load image matrix
 
 %% Feature detection and extraction of SIFT points
 
+% [frames, descs] = extractSIFT(Imf);
+
+load('descs')
+load('frames')
+
+
 
 %% Apply normalized 8-point RANSAC and find best matches
 
