@@ -7,7 +7,7 @@ cntr = 1;
 for num = 586:604
     imageLoc = ['model_castle_small\8ADT8' num2str(num) '.JPG'];
     im = im2single(rgb2gray(imread(imageLoc)));
-    imwrite(im, ['8ADT8' num2str(num) '.ppm']);
+    %imwrite(im, ['8ADT8' num2str(num) '.ppm']);
     if num == 1
         Imf=zeros(size(im,1),size(im,2),19);
     end
