@@ -10,5 +10,9 @@ for i = 1:size(Imf,3)
 
 end
 
+save('frames','frames')
+save('descs','descs')
+
+
 end
 

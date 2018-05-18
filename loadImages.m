@@ -15,5 +15,7 @@ for num = 586:604
 
 end
 
+save('Imf','Imf')
+
 end
 
