@@ -3,7 +3,7 @@ function bestMatches = eightPointRANSAC(Imf,frames,descs)
 
 
 %% Select 20 random matches
-for i = 1:size(Imf,3) %% TODO change later to all images
+for i = 1:size(Imf,3)-1 %% TODO change later to all images
 
     [matches, scores] = vl_ubcmatch (descs(:,:,i), descs(:,:,i+1));
 
@@ -12,45 +12,29 @@ for i = 1:size(Imf,3) %% TODO change later to all images
     randindexes = randi([1, size(matches,2)],1,nummatches);
 
     for j = 1:nummatches
-        randmatches(:,j) = matches(:,randindexes(j));
+        randmatches(:,j,i) = matches(:,randindexes(j));
     end
 
-    plotDiff(Imf(:,:,i),randmatches,frames(:,:,i),frames(:,:,i+1));
-    pause(0.1)
+    plotDiff(Imf(:,:,i),randmatches(:,:,i),frames(:,:,i),frames(:,:,i+1));
+     pause(0.04)
     
 end
 
 
-%% 8 point algorithm, fundamental matrix
+%% Normalized 8 point algorithm
 
-for i = 1:length(randmatches) %construct A
+for i = 1:size(randmatches,2) %construct A, only for 2 first images
     
-    index  = matches(:,i); 
+    index  = randmatches(:,i,1); 
     
-    x(i) = frames1(1,index(1));
-    y(i) = frames1(2,index(1));
-    xprim(i) = frames2(1,index(2));
-    yprim(i) = frames2(1,index(2));
-    
-    A(i,:) = [x(i)*xprim(i) x(i)*yprim(i) x(i) y(i)*xprim(i)  y(i)*yprim(i) y(i) xprim(i) yprim(i) 1];
+    x(i) = frames(1,index(1),1);
+    y(i) = frames(2,index(1),1);
+    xprim(i) = frames(1,index(2),2);
+    yprim(i) = frames(1,index(2),2);   
+   
 
 end
 
-[U,D,V] = svd(A); % A = UDV' 
-
-[minvalue,minindex] = min(D(D>0));
-
-F = reshape(V(:,minindex),3,3);
-
-[Uf,Df,Vf] = svd(F); 
-
-[minvalue,minindex] = min(Df(Df>0));
-
-Df(minindex,minindex) = 0;
-
-F = Uf*Df*Vf';
-
-%% Normalized eight-point
 
 mx = mean(x);
 my = mean(y);
@@ -95,9 +79,9 @@ Fnorm = Ufnorm*Dfnorm*Vfnorm';
 
 Fdenorm = T'*Fnorm*T; %Denormalization: let F = T'FT
 
-%% Plot epipolar lines
-plotEpipolar(Imf,Fdenorm);
+plotEpipolar(Imf,Fdenorm,x,y,xprim,yprim);
 
 
+bestMatches = 1;
 end
 

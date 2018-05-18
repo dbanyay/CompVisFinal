@@ -3,7 +3,7 @@ close all
 
 %% Load images
 
-Imf = loadImages(); % downscaled images for faster processing
+%Imf = loadImages(); % downscaled images for faster processing
 
 %load('Imf') % load image matrix
 
@@ -12,7 +12,7 @@ Imf = loadImages(); % downscaled images for faster processing
 
 %[frames, descs] = extractSIFT(Imf); % using vl_feat
 
-[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
+%[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
 
 %load('descs')
 %load('frames')
