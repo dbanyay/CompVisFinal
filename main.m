@@ -1,11 +1,11 @@
-
-close all
+clear all
+%close all
 
 %% Load images
 
 %Imf = loadImages(); % downscaled images for faster processing
 
-%load('Imf') % load image matrix
+load('Imf') % load image matrix
 
 
 %% Feature detection and extraction of SIFT points
@@ -14,14 +14,15 @@ close all
 
 %[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
 
-%load('descs')
-%load('frames')
+load('descs')
+load('frames')
 
 
 
 %% Apply normalized 8-point RANSAC and find best matches
 
-bestMatches = eightPointRANSAC(Imf,frames,descs);
+%bestMatches = eightPointRANSAC(Imf,frames,descs);
+bestMatches = ramon(Imf,frames,descs);
 
 %% Chaining
 
