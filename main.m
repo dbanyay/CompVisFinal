@@ -21,8 +21,8 @@ load('frames')
 
 %% Apply normalized 8-point RANSAC and find best matches
 
-%bestMatches = eightPointRANSAC(Imf,frames,descs);
-bestMatches = ramon(Imf,frames,descs);
+bestMatches = eightPointRANSAC(Imf,frames,descs);
+
 
 %% Chaining
 
