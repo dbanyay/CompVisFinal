@@ -154,6 +154,6 @@ for frame = 1:size(Imf,3)-1
 
 end
 
-%F = RANSAC_Fundamental(p_i_new, p_i_new2, T_new);
+[F_ransac, chosen_randindex] = RANSAC_Fundamental(p_i_new, p_i_new2, T);
 bestMatches = 1;
 end
