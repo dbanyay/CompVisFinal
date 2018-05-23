@@ -25,7 +25,7 @@ bestMatches = eightPointRANSAC(Imf,frames,descs);
 
 
 %% Chaining
-
+measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
 
 
 %% Stitching
