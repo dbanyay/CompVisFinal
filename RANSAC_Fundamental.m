@@ -27,10 +27,10 @@ function [F, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T)
         
         threshold = 0.0008; 
         inliercntr = 0;
-        for i = 1:20-nummatches
-            c1 = F_eight*p_i_rest(:,i); %Fpi
-            c2 = F_eight'*p_i_rest(:,i); %F'pi
-            d(repeat,i) = ((p_i_prime_rest(:,i)'*F_eight*p_i_rest(:,i))^2)/(c1(1)^2+c1(2)^2+c2(1)^2+c2(2)^2);
+        for i = 1:20
+            c1 = F_eight*[p_i(:,i);1]; %Fpi
+            c2 = F_eight'*[p_i(:,i);1]; %F'pi
+            d(repeat,i) = (([p_i_prime(:,i);1]'*F_eight*[p_i(:,i);1])^2)/(c1(1)^2+c1(2)^2+c2(1)^2+c2(2)^2);
             if d(repeat,i) < threshold
                 inliercntr = inliercntr+1;
                 inlier_ind(repeat,inliercntr) = i; 

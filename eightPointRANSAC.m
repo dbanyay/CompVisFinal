@@ -27,8 +27,8 @@ for frame = 1:size(Imf,3)-1
      newMatches = [newMatchesx ; newMatchesy];
      
      %plot the different of random matches in two images
-     figure(1);
-     plotDiff(img1,newMatches,frames1,frames2)
+     %figure(1);
+     %plotDiff(img1,newMatches,frames1,frames2)
     
      coord_img1 = zeros(2,nummatches);
      coord_img2 = zeros(2,nummatches);
