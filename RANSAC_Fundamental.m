@@ -1,4 +1,4 @@
-function [F, chosen_randindex] = RANSAC_Fundamental(p_i, p_i_prime, T)
+function [F, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T)
 
     nummatches = 8;
 
@@ -12,7 +12,7 @@ function [F, chosen_randindex] = RANSAC_Fundamental(p_i, p_i_prime, T)
             p_i_eight(:,i) = [p_i(:,randindex(i));1];
             p_i_prime_eight(:,i) = [p_i_prime(:,randindex(i));1];
         end
-        F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, 'n'); 
+        F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, 'n');  %normalized F
         %the other correspondences
         count = 1;
         i = 1;
@@ -25,7 +25,7 @@ function [F, chosen_randindex] = RANSAC_Fundamental(p_i, p_i_prime, T)
             count = count + 1;
         end
         
-        threshold = 0.01; 
+        threshold = 0.0008; 
         inliercntr = 0;
         for i = 1:20-nummatches
             c1 = F_eight*p_i_rest(:,i); %Fpi
@@ -33,24 +33,21 @@ function [F, chosen_randindex] = RANSAC_Fundamental(p_i, p_i_prime, T)
             d(repeat,i) = ((p_i_prime_rest(:,i)'*F_eight*p_i_rest(:,i))^2)/(c1(1)^2+c1(2)^2+c2(1)^2+c2(2)^2);
             if d(repeat,i) < threshold
                 inliercntr = inliercntr+1;
+                inlier_ind(repeat,inliercntr) = i; 
             end
         end
     inliers(repeat) = inliercntr;
-    all_randindex(repeat,:) = randindex;
     end
 
 
 [max_val, ind] = max(inliers);
-chosen_randindex = all_randindex(ind,:);
-count = 1;
-i = 1;
-while count <= 20
-      if ismember(count,chosen_randindex) == 0 %to tell if the value of count is found in the vector randindex or not
-            p_i_inliers(:,i) = [p_i(:,count);1];
-            p_i_prime_inliers(:,i) = [p_i_prime(:,count);1];
-            i = i + 1;
-      end
-      count = count + 1;
+inlier_index = inlier_ind(ind,:);
+
+for i = 1:length(inlier_index)
+       p_i_inliers(:,i) = [p_i(:,inlier_index(i));1];
+       p_i_prime_inliers(:,i) = [p_i_prime(:,inlier_index(i));1];
+       i = i + 1;
 end
+
 F = getFundamentalM(p_i_inliers, p_i_prime_inliers, T, 'd'); 
 end
