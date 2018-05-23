@@ -11,7 +11,8 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
     desc1 = descs(:,:,frame);
     desc2 = descs(:,:,frame+1);
 
-    [matches, scores] = vl_ubcmatch (desc1, desc2);  
+    [matches, scores] = vl_ubcmatch (desc1, desc2);
+    
     nummatches = 60; % number of random selected matches  
     randindexes = randperm(max(size(matches)),nummatches);
 
@@ -36,7 +37,31 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
     measurementMatrix = sortrows([coord_img1' coord_img2'],[1 2 3 4], 'descend')';
     % fill in first 4 rows with the random matches
     
-    for frame = 2:size(frame,3)-1
+    for frame = 3:size(frames,3)
+        
+        frames1 = frames(:,:,frame);
+        frames2 = frames(:,:,frame+1);
+
+        desc1 = descs(:,:,frame);
+        desc2 = descs(:,:,frame+1);
+        
+        [matches, scores] = vl_ubcmatch (desc1, desc2);
+        
+        for prevmatch = 1:nummatches %search for previous matches
+            prevPoint = measurementMatrix(frame:frame+1,prevmatch); % matchpoint from previous frame
+            for curpoint = 1:size(frames2,2)
+                prevmatch
+                curpoint
+                if frames(1,curpoint) == prevPoint(1)&& frames(2,curpoint) == prevPoint(2)
+                measurementMatrix(frame,prevmatch) = prevPoint(1);
+                measurementMatrix(frame+1,prevmatch) = prevPoint(2);
+                % if we have match with previous points, then use those
+                break
+                end    
+            end            
+        end
+        
+        
         
     end
 measurementMatrix = 1;
