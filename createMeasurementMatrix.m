@@ -32,34 +32,29 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
         coord_img1(2,i) = frames1(2,newMatches(1,i)); %y coordinates of matched points in img1
         coord_img2(1,i) = frames2(1,newMatches(2,i)); %x coordinates of matched points in img2
         coord_img2(2,i) = frames2(2,newMatches(2,i)); %y coordinates of matched points in img2
+        
+        desc_prev_frame(:,i) = desc2(:,newMatches(1,i)); % save descriptors for frame 2
      end
 
     measurementMatrix = sortrows([coord_img1' coord_img2'],[1 2 3 4], 'descend')';
-    % fill in first 4 rows with the random matches
+    % fill in first 4 rows with matches with the previous frame
     
-    for frame = 3:size(frames,3)
+    
+    
+    for frame = 2:size(frames,3)
         
         frames1 = frames(:,:,frame);
         frames2 = frames(:,:,frame+1);
 
-        desc1 = descs(:,:,frame);
-        desc2 = descs(:,:,frame+1);
+        desc_cur_frame = descs(:,:,frame+1);
         
-        [matches, scores] = vl_ubcmatch (desc1, desc2);
+        [matches, scores] = vl_ubcmatch (desc_prev_frame, desc_cur_frame);
+        % look for matches between previous frame and current frame
         
-        for prevmatch = 1:nummatches %search for previous matches
-            prevPoint = measurementMatrix(frame:frame+1,prevmatch); % matchpoint from previous frame
-            for curpoint = 1:size(frames2,2)
-                prevmatch
-                curpoint
-                if frames(1,curpoint) == prevPoint(1)&& frames(2,curpoint) == prevPoint(2)
-                measurementMatrix(frame,prevmatch) = prevPoint(1);
-                measurementMatrix(frame+1,prevmatch) = prevPoint(2);
-                % if we have match with previous points, then use those
-                break
-                end    
-            end            
-        end
+        measurementMatrix(frame*2-1:frame*2, 1:size(matches,2)) = frames2(1,matches(2,1:size(matches,2)));
+        % fill next line of measurement matrix with new values
+        
+        
         
         
         
