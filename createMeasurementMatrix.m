@@ -37,28 +37,32 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
      end
 
     measurementMatrix = sortrows([coord_img1' coord_img2'],[1 2 3 4], 'descend')';
-    % fill in first 4 rows with matches with the previous frame
+    % fill in first 4 rows with the random matches
     
     
     
-    for frame = 2:size(frames,3)
+    for frame = 3:size(frames,3)
         
         frames1 = frames(:,:,frame);
         frames2 = frames(:,:,frame+1);
 
-        desc_cur_frame = descs(:,:,frame+1);
+        desc_cur_frame = descs(:,:,frame);
         
         [matches, scores] = vl_ubcmatch (desc_prev_frame, desc_cur_frame);
         % look for matches between previous frame and current frame
         
-        measurementMatrix(frame*2-1:frame*2, 1:size(matches,2)) = frames2(1,matches(2,1:size(matches,2)));
-        % fill next line of measurement matrix with new values
+        measurementMatrix(frame*2-1:frame*2, 1:size(matches,2)) = frames1(1:2,matches(2,1:size(matches,2)));
+        % fill next line with matches from the previous frame
         
         
+        remainingmatches = nummatches - size(matches,2); % number of matches still to be filled  
+        randindexes = randperm(size(frames,2),nummatches);
+% 
+%         for j = 1:nummatches
+%             randmatches(:,j) = matches(:,randindexes(j));
+%         end      
+        measurementMatrix(frame*2-1:frame*2, size(matches,2):nummatches) = 0;
         
-        
-        
-    end
-measurementMatrix = 1;
+    end    
 end
 
