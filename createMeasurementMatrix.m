@@ -4,15 +4,14 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
 % horizontal and vertical coordinates of P points tracked through F frames.
 
     measurementMatrix = bestMatches(:,1:4,1)'; % fill in first 4 rows with frame 1 2  best matches   
+    measurementMatrix = reshape(measurementMatrix( measurementMatrix ~= 0),4,[]); % remove zeros
+    
+    prev_num_points = size(measurementMatrix,2);
     
     
-    for frame = 2:size(frames,3) -1
-        
+    for frame = 2:size(frames,3) -1        
               
-        for i = 1:size(bestMatches,1)
-            if bestMatches(i,1,frame) == 0 % if coordinate is 0 break for loop
-                break
-            end
+        for i = 1:prev_num_points
             desc1(:,i) = descs(:,bestMatches(i,5,frame),frame); 
             desc2(:,i) = descs(:,bestMatches(i,6,frame),frame+1); 
         end
@@ -22,12 +21,9 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
         % look for matches between previous frame and current frame
         
         for i = 1:size(matches,2)    
-            measurementMatrix((frame+1)*2-1:(frame+1)*2,matches(2,i)) = bestMatches(matches(i),3:4,frame)';
+            measurementMatrix((frame+1)*2-1:(frame+1)*2,matches(1,i)) = bestMatches(matches(i),3:4,frame)';
         end
         
-        
-        %measurementMatrix((frame+1)*2:(frame+1)*2+1, 1:size(matches,2)) = bestMatches(,,frame);
-     
         
         desc_prev_frame = desc_cur_frame(:,matches(2,1:size(matches,2)));
      
