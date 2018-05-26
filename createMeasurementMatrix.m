@@ -13,19 +13,7 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
 
     [matches, scores] = vl_ubcmatch (desc1, desc2);
     
-    nummatches = 60; % number of random selected matches  
-    randindexes = randperm(max(size(matches)),nummatches);
 
-    for j = 1:nummatches
-        randmatches(:,j) = matches(:,randindexes(j));
-    end      
-    
-     newMatchesx =  randmatches(1,:);
-     newMatchesy =  randmatches(2,:);
-     newMatches = [newMatchesx ; newMatchesy];
-     
-     coord_img1 = zeros(2,nummatches);
-     coord_img2 = zeros(2,nummatches);
 
      for i = 1:length(newMatches)
         coord_img1(1,i) = frames1(1,newMatches(1,i)); %x coordinates of matched points in img1
@@ -41,12 +29,18 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
     
     
     
-    for frame = 3:size(frames,3)
+    for frame = 1:size(frames,3) -1
         
-        frames1 = frames(:,:,frame);
-        frames2 = frames(:,:,frame+1);
-
-        desc_cur_frame = descs(:,:,frame);
+        indexes1 = bestMatches()
+        
+        
+        
+        frame1 = frames(:,:,frame);
+        frame2 = frames(:,:,frame+1);
+        
+        
+        desc1 = descs(:,:,frame);
+        desc1 = descs(:,:,frame);
         
         [matches, scores] = vl_ubcmatch (desc_prev_frame, desc_cur_frame);
         % look for matches between previous frame and current frame
