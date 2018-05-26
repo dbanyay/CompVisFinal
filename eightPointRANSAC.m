@@ -85,29 +85,35 @@ for frame = 1:size(Imf,3)-1
      for i = 1:length(inlier_index)
                 inliers_img1(i,:) = [coord_img1(inlier_index(i),:)];
                 inliers_img2(i,:) = [coord_img2(inlier_index(i),:)];
+                inliers_matches(i,:) = [matches(:,inlier_index(i))'];
      end
-     bestMatches(1:size(inliers_img1,1),1:4,frame) = [inliers_img1, inliers_img2];
+     bestMatches(1:size(inliers_img1,1),1:6,frame) = [inliers_img1 inliers_img2 inliers_matches];
+
+     % first feature point coordinates, second feature point coordinates,
+     % indexes from original frame
+     
 
     
-     figure(2);
-     subplot(121);
-     imshow(img1); 
-     title('Inliers and Epipolar Lines in First Image'); hold on;
-     plot(inliers_img1(:,1),inliers_img1(:,2),'go')
-     epiLines = epipolarLine(F_ransac,inliers_img1);
-     points = lineToBorderPoints(epiLines,size(img1));
-     line(points(:,[1,3])',points(:,[2,4])');
-
-     subplot(122); 
-     imshow(img2);
-     title('Inliers and Epipolar Lines in Second Image'); hold on;
-     plot(inliers_img2(:,1),inliers_img2(:,2),'go')
-     epiLines = epipolarLine(F_ransac,inliers_img2);
-     points = lineToBorderPoints(epiLines,size(img2));
-     line(points(:,[1,3])',points(:,[2,4])');
+%      figure(2);
+%      subplot(121);
+%      imshow(img1); 
+%      title('Inliers and Epipolar Lines in First Image'); hold on;
+%      plot(inliers_img1(:,1),inliers_img1(:,2),'go')
+%      epiLines = epipolarLine(F_ransac,inliers_img1);
+%      points = lineToBorderPoints(epiLines,size(img1));
+%      line(points(:,[1,3])',points(:,[2,4])');
+% 
+%      subplot(122); 
+%      imshow(img2);
+%      title('Inliers and Epipolar Lines in Second Image'); hold on;
+%      plot(inliers_img2(:,1),inliers_img2(:,2),'go')
+%      epiLines = epipolarLine(F_ransac,inliers_img2);
+%      points = lineToBorderPoints(epiLines,size(img2));
+%      line(points(:,[1,3])',points(:,[2,4])');
      
      inliers_img1 = [];
      inliers_img2 = [];
+     inliers_matches = [];
 end
 
 
