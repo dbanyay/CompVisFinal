@@ -1,4 +1,4 @@
-function [F, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T)
+function [F, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T, T_new)
 
     nummatches = 8;
 
@@ -12,25 +12,16 @@ function [F, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T)
             p_i_eight(:,i) = [p_i(:,randindex(i));1];
             p_i_prime_eight(:,i) = [p_i_prime(:,randindex(i));1];
         end
-        F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, 'n');  %normalized F
-        %the other correspondences
-        count = 1;
-        i = 1;
-        while count <= length(p_i)-nummatches
-            if ismember(count,randindex) == 0 %to tell if the value of count is found in the vector randindex or not
-                p_i_rest(:,i) = [p_i(:,count);1];
-                p_i_prime_rest(:,i) = [p_i_prime(:,count);1];
-                i = i + 1;
-            end
-            count = count + 1;
-        end
+        F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, T_new, 'n');  %normalized F
         
-        threshold = 0.005; 
+        threshold = 50; 
         inliercntr = 0;
         for i = 1:length(p_i)
             c1 = F_eight*[p_i(:,i);1]; %Fpi
-            c2 = F_eight'*[p_i(:,i);1]; %F'pi
-            d(repeat,i) = (([p_i_prime(:,i);1]'*F_eight*[p_i(:,i);1])^2)/(c1(1)^2+c1(2)^2+c2(1)^2+c2(2)^2);
+            c2 = F_eight'*[p_i_prime(:,i);1]; %F'pi'
+            nom = ([p_i_prime(:,i);1]'*F_eight*[p_i(:,i);1])^2;
+            denom = c1(1)^2+c1(2)^2+c2(1)^2+c2(2)^2;
+            d(repeat,i) = 1000* (nom / denom);
             if d(repeat,i) < threshold
                 inliercntr = inliercntr+1;
                 inlier_ind(repeat,inliercntr) = i; 
@@ -49,5 +40,5 @@ for i = 1:length(inlier_index)
        i = i + 1;
 end
 
-F = getFundamentalM(p_i_inliers, p_i_prime_inliers, T, 'd'); 
+F = getFundamentalM(p_i_inliers, p_i_prime_inliers, T, T_new, 'd'); 
 end

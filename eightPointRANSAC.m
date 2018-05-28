@@ -1,4 +1,4 @@
-function bestMatches = eightPointRANSAC(Imf,frames,descs)
+function inlier_index = eightPointRANSAC(Imf,frames,descs)
 
 
 
@@ -47,18 +47,16 @@ for frame = 1:size(Imf,3)-1
      for i = 1:nummatches
         d_sum = d_sum + sqrt( (coord_img1(1,i)-m_x)^2 + (coord_img1(2,i)-m_y)^2 );
      end
-     d = d_sum/nummatches;
-     T = [sqrt(2)/d 0 -m_x*sqrt(2)/d; 0 sqrt(2)/d -m_y*sqrt(2)/d; 0 0 1 ]; 
-
-     p_i = zeros(3,nummatches);
-     p_i_new = zeros(3,nummatches);
+     d_1 = d_sum/nummatches;
+     T = [sqrt(2)/d_1 0 -m_x*sqrt(2)/d_1; 0 sqrt(2)/d_1 -m_y*sqrt(2)/d_1; 0 0 1 ];     
+     p_i = zeros(3,nummatches); %normalized coordiantes of img1
      for i = 1:nummatches
-        p_i(1,i) = coord_img1(1,i); %coordinate x
-        p_i(2,i) = coord_img1(2,i); %coordinate y
-        p_i(3,i) = 1;
-        p_i_new(:,i) = T*p_i(:,i);
+        x = coord_img1(1,i); %coordinate x
+        y = coord_img1(2,i); %coordinate y
+        z = 1;
+        p_i(:,i) = T*[x;y;z];
      end
-     p_i_new = p_i_new(1:2,:);
+     p_i = p_i(1:2,:);
 
      m_x_new = mean(coord_img2(1,:)); 
      m_y_new = mean(coord_img2(2,:)); 
@@ -68,20 +66,19 @@ for frame = 1:size(Imf,3)-1
      end
      d_new = d_sum/nummatches;
      T_new = [sqrt(2)/d_new 0 -m_x_new*sqrt(2)/d_new; 0 sqrt(2)/d_new -m_y_new*sqrt(2)/d_new; 0 0 1 ];  
-
-     p_i_new2 = zeros(3,nummatches);
+     p_i_prime = zeros(3,nummatches);%normalized coordinates of img2
      for i = 1:nummatches
         x = coord_img2(1,i); %coordinate x'
         y = coord_img2(2,i); %coordinate y'
         z = 1;
-        p_i_new2(:,i) = T_new*[x;y;z];
+        p_i_prime(:,i) = T_new*[x;y;z];
      end
-     p_i_new2 = p_i_new2(1:2,:);
+     p_i_prime = p_i_prime(1:2,:);
     
      coord_img1 = coord_img1';
      coord_img2 = coord_img2';
     
-     [F_ransac, inlier_index] = RANSAC_Fundamental(p_i_new, p_i_new2, T_new);
+     [F_ransac, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T, T_new);
      for i = 1:length(inlier_index)
                 inliers_img1(i,:) = [coord_img1(inlier_index(i),:)];
                 inliers_img2(i,:) = [coord_img2(inlier_index(i),:)];
@@ -89,7 +86,7 @@ for frame = 1:size(Imf,3)-1
      bestMatches(1:size(inliers_img1,1),1:4,frame) = [inliers_img1, inliers_img2];
 
     
-     figure(2);
+     figure;
      subplot(121);
      imshow(img1); 
      title('Inliers and Epipolar Lines in First Image'); hold on;
