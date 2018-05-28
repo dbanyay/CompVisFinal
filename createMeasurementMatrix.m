@@ -3,91 +3,48 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
 % an image sequence can be represented as a 2F x P measurement matrix W, which is made up of the
 % horizontal and vertical coordinates of P points tracked through F frames.
 
-    frame = 1;  % create first 2 lines of M matrix
-
-    frames1 = frames(:,:,frame);
-    frames2 = frames(:,:,frame+1);
-
-    desc1 = descs(:,:,frame);
-    desc2 = descs(:,:,frame+1);
-
-    [matches, scores] = vl_ubcmatch (desc1, desc2);
+    measurementMatrix = bestMatches(:,1:4,1)'; % fill in first 4 rows with frame 1 2  best matches   
+    measurementMatrix = reshape(measurementMatrix( measurementMatrix ~= 0),4,[]); % remove zeros
     
+    prev_num_points = size(measurementMatrix,2);
 
-
-     for i = 1:length(newMatches)
-        coord_img1(1,i) = frames1(1,newMatches(1,i)); %x coordinates of matched points in img1
-        coord_img1(2,i) = frames1(2,newMatches(1,i)); %y coordinates of matched points in img1
-        coord_img2(1,i) = frames2(1,newMatches(2,i)); %x coordinates of matched points in img2
-        coord_img2(2,i) = frames2(2,newMatches(2,i)); %y coordinates of matched points in img2
-        
-        desc_prev_frame(:,i) = desc2(:,newMatches(1,i)); % save descriptors for frame 2
-
-    [matches, scores] = vl_ubcmatch (desc1, desc2);  
-    nummatches = length(bestMatches(:,:,1)); % number of random selected matches  
-%     randindexes = randperm(max(size(matches)),nummatches);
-% 
-%     for j = 1:nummatches
-%         randmatches(:,j) = matches(:,randindexes(j));
-%     end      
-%     
-%      newMatchesx =  randmatches(1,:);
-%      newMatchesy =  randmatches(2,:);
-%      newMatches = [newMatchesx ; newMatchesy];
-     
-     coord_img1 = zeros(2,nummatches);
-     coord_img2 = zeros(2,nummatches);
-     bestMatches_temporary = bestMatches(:,:,1)'; %for testing
-
-     for i = 1:nummatches
-        coord_img1(1,i) = bestMatches_temporary(1,i); %x coordinates of matched points in img1
-        coord_img1(2,i) = bestMatches_temporary(2,i); %y coordinates of matched points in img1
-        coord_img2(1,i) = bestMatches_temporary(3,i); %x coordinates of matched points in img2
-        coord_img2(2,i) = bestMatches_temporary(4,i); %y coordinates of matched points in img2
->>>>>>> 19d21fb45de28fb1c99bc4999b0d26f3b0a7bffe
-     end
-
-    measurementMatrix = sortrows([coord_img1' coord_img2'],[1 2 3 4], 'descend')';
-    % fill in first 4 rows with the random matches
+        for i = 1:prev_num_points
+            desc1(:,i) = descs(:,bestMatches(i,5,1),1);
+        end
     
     
-    
-    for frame = 1:size(frames,3) -1
+    for frame = 2:size(frames,3)-1        
         
-        indexes1 = bestMatches()
+        cur_num_points = length(nonzeros(bestMatches(:,1,frame)));
         
+        for i = 1: cur_num_points
+            desc2(:,i) = descs(:,bestMatches(i,6,frame),frame+1);
+        end
+
         
-        
-        frame1 = frames(:,:,frame);
-        frame2 = frames(:,:,frame+1);
-        
-        
-        desc1 = descs(:,:,frame);
-        desc1 = descs(:,:,frame);
-        
-        [matches, scores] = vl_ubcmatch (desc_prev_frame, desc_cur_frame);
+        [matches, scores] = vl_ubcmatch (desc1, desc2);
         % look for matches between previous frame and current frame
         
-        measurementMatrix(frame*2-1:frame*2, 1:size(matches,2)) = frames1(1:2,matches(2,1:size(matches,2)));
-        % fill next line with matches from the previous frame 
-                
+        for i = 1:size(matches,2)    
+            measurementMatrix((frame+1)*2-1:(frame+1)*2,matches(1,i)) = bestMatches(matches(2,i),3:4,frame)';
+        end     
+        % fill in values that match with the previous frame        
+ 
+        cntr = prev_num_points+1;
         
-        desc_prev_frame = desc_cur_frame(:,matches(2,1:size(matches,2)));
-     
+        for i = 1:cur_num_points            % fill in non used values   
+            
+            if(~ismember(i,matches(2,:)))
+                measurementMatrix((frame+1)*2-1:(frame+1)*2,cntr) = bestMatches(i,3:4,frame)';
+                cntr = cntr+1;
+            end            
+            
+        end    
         
-<<<<<<< HEAD
-        remainingmatches = nummatches - size(matches,2); % number of matches still to be filled  
-        randindexes = randperm(size(frames,2),nummatches);
-% 
-%         for j = 1:nummatches
-%             randmatches(:,j) = matches(:,randindexes(j));
-%         end      
-        measurementMatrix(frame*2-1:frame*2, size(matches,2):nummatches) = 0;
+       prev_num_points = size(descs,2);
        
-    end    
-
-    end
-%measurementMatrix = 1;
-
+       desc1 = desc2;
+              
+    end   
 end
 
