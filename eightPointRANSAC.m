@@ -1,4 +1,4 @@
-function inlier_index = eightPointRANSAC(Imf,frames,descs)
+function bestMatches = eightPointRANSAC(Imf,frames,descs)
 
 
 
@@ -78,7 +78,7 @@ for frame = 1:size(Imf,3)-1
      coord_img1 = coord_img1';
      coord_img2 = coord_img2';
     
-     [F_ransac, inlier_index] = RANSAC_Fundamental(p_i, p_i_prime, T, T_new);
+     [F_ransac, inlier_index] = RANSAC_Fundamental(coord_img1', coord_img2', p_i, p_i_prime, T, T_new);
      for i = 1:length(inlier_index)
                 inliers_img1(i,:) = [coord_img1(inlier_index(i),:)];
                 inliers_img2(i,:) = [coord_img2(inlier_index(i),:)];
@@ -91,7 +91,7 @@ for frame = 1:size(Imf,3)-1
      
 
     
-<<<<<<< HEAD
+%<<<<<<< HEAD
      figure;
      subplot(121);
      imshow(img1); 
@@ -108,7 +108,7 @@ for frame = 1:size(Imf,3)-1
      epiLines = epipolarLine(F_ransac,inliers_img2);
      points = lineToBorderPoints(epiLines,size(img2));
      line(points(:,[1,3])',points(:,[2,4])');
-=======
+%=======
 %      figure(2);
 %      subplot(121);
 %      imshow(img1); 
@@ -125,7 +125,7 @@ for frame = 1:size(Imf,3)-1
 %      epiLines = epipolarLine(F_ransac,inliers_img2);
 %      points = lineToBorderPoints(epiLines,size(img2));
 %      line(points(:,[1,3])',points(:,[2,4])');
->>>>>>> 96689c812a2f57f762ac7f83eeb06b9d7f8dde47
+%>>>>>>> 96689c812a2f57f762ac7f83eeb06b9d7f8dde47
      
      inliers_img1 = [];
      inliers_img2 = [];
