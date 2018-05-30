@@ -11,6 +11,8 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
         for i = 1:prev_num_points
             desc1(:,i) = descs(:,bestMatches(i,5,1),1);
         end
+        
+        [C, IA, IB] = intersect(bestMatches(:,6,1), bestMatches(:,5,2));
     
     
     for frame = 2:size(frames,3)-1        
