@@ -33,24 +33,23 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
 
         matches = [IA IB];
                 
-        for i = 1:length(IA)
-            
+        for i = 1:length(IA)            
           
-            measurementMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)';   
-
+            measurementMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
+            bestMatches(IB(i),7,frame) = bestMatches(IA(i),7,frame-1);
        
         end     
-        % fill in values that match with the previous frame        
- 
+        % fill in values that match with the previous frame 
+        
         cntr = prev_num_points+1;
+
         
         for i = 1:cur_num_points            % fill in non used values   
-            
-            if(~ismember(i,matches(2,:)))
-                measurementMatrix((frame+1)*2-1:(frame+1)*2,cntr) = bestMatches(i,3:4,frame)';
+            if(~ismember(i,IB))
+                measurementMatrix((frame+1)*2-1:(frame+1)*2,cntr) = bestMatches(i,3:4,frame)';                
+                bestMatches(i,7,frame) = cntr;
                 cntr = cntr+1;
-            end            
-            
+            end   
         end    
         
        prev_num_points = size(descs,2);
