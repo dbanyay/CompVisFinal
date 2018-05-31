@@ -4,27 +4,41 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
 % horizontal and vertical coordinates of P points tracked through F frames.
 
     measurementMatrix = bestMatches(:,1:4,1)'; % fill in first 2 rows with frame 1-2 indices of best matches   
-    measurementMatrix = reshape(measurementMatrix( measurementMatrix ~= 0),4,[]); % remove zeros
+    measurementMatrix = reshape(measurementMatrix(measurementMatrix ~= 0),4,[]); % remove zeros
    
-    prev_num_points = size(measurementMatrix,2);     
-
+    prev_num_points = size(measurementMatrix,2); 
     
+    chain_index_vector = 1:prev_num_points; 
+    
+    for i = 1:prev_num_points
+        bestMatches(i,7,1) = chain_index_vector(i);        
+    end
     
     for frame = 2:size(frames,3)-1      
         
-        [C, IA, IB] = intersect(bestMatches(:,6,frame), bestMatches(:,5,frame+1));
+        prev_matches = bestMatches(:,6,frame-1); % frame indexes from first pic
+        prev_matches = prev_matches(prev_matches ~= 0); % remove zeros
+        
+        cur_matches = bestMatches(:,5,frame);% frame indexes from second pic
+        cur_matches = cur_matches(cur_matches ~= 0); % remove zeros
+        
+        cur_num_points = length(cur_matches);
+        % this is the number of the matches found in bestMatches for second
+        % image       
+        
+        
+        [C, IA, IB] = intersect(prev_matches, cur_matches);
         % IA and IB stores matching indexes
         
-        cur_num_points = length(nonzeros(bestMatches(:,1,frame)));
-        % this is the number of the matches found in bestMatches for second
-        % image
-        
-        
+
+        matches = [IA IB];
+                
         for i = 1:length(IA)
             
-            matched_coordinates(1) = IA(matches(2,i),3:4,frame)';
-            matched_coordinates(2) = IB();
-            measurementMatrix((frame+1)*2-1:(frame+1)*2,matches(1,i)) = 
+          
+            measurementMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)';   
+
+       
         end     
         % fill in values that match with the previous frame        
  
@@ -40,9 +54,7 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
         end    
         
        prev_num_points = size(descs,2);
-       
-       desc1 = desc2;
-              
+                     
     end   
 end
 

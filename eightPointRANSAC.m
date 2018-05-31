@@ -124,7 +124,7 @@ for frame = 1:size(Imf,3)-1
 %      epiLines = epipolarLine(F_ransac,inliers_img2);
 %      points = lineToBorderPoints(epiLines,size(img2));
 %      line(points(:,[1,3])',points(:,[2,4])');
-%>>>>>>> 96689c812a2f57f762ac7f83eeb06b9d7f8dde47
+
      
      inliers_img1 = [];
      inliers_img2 = [];
