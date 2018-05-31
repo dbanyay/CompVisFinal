@@ -38,12 +38,12 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
         end     
         % fill in values that match with the previous frame 
         
-        cntr = prev_num_points+1;
+        cntr = size(measurementMatrix,2)+1;
 
         
         for i = 1:cur_num_points            % fill in non used values   
             if(~ismember(i,IB))
-                measurementMatrix((frame+1)*2-1:(frame+1)*2,cntr) = bestMatches(i,3:4,frame)';                
+                measurementMatrix((frame+1)*2-3:(frame+1)*2,cntr) = bestMatches(i,1:4,frame)';                
                 bestMatches(i,7,frame) = cntr;
                 cntr = cntr+1;
             end   
