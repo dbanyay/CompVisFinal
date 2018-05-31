@@ -6,16 +6,15 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
     measurementMatrix = bestMatches(:,1:4,1)'; % fill in first 2 rows with frame 1-2 indices of best matches   
     measurementMatrix = reshape(measurementMatrix(measurementMatrix ~= 0),4,[]); % remove zeros
    
-    prev_num_points = size(measurementMatrix,2); 
+    prev_num_points = size(measurementMatrix,2);
     
-    chain_index_vector = 1:prev_num_points; 
+        chain_index_vector = 1:prev_num_points; 
     
-    for i = 1:prev_num_points
-        bestMatches(i,7,1) = chain_index_vector(i);        
-    end
+
+        bestMatches(1:prev_num_points,7,1) = 1:prev_num_points;        
+
     
-    for frame = 2:size(frames,3)-1      
-        
+    for frame = 2:size(frames,3) -1
         prev_matches = bestMatches(:,6,frame-1); % frame indexes from first pic
         prev_matches = prev_matches(prev_matches ~= 0); % remove zeros
         
@@ -30,8 +29,6 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
         [C, IA, IB] = intersect(prev_matches, cur_matches);
         % IA and IB stores matching indexes
         
-
-        matches = [IA IB];
                 
         for i = 1:length(IA)            
           
@@ -50,9 +47,7 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
                 bestMatches(i,7,frame) = cntr;
                 cntr = cntr+1;
             end   
-        end    
-        
-       prev_num_points = size(descs,2);
+        end  
                      
     end   
 end
