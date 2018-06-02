@@ -30,6 +30,8 @@ measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
 
 %% Stitching
 
+%[M,S] = estimate_3D_points(measurementMatrix);
+
 
 %% Apply bundle adjustment
 
