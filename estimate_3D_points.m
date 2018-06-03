@@ -1,4 +1,4 @@
-function [M_matrix,S_matrix] = estimate_3D_points(M)
+function [M_matrix,S_matrix] = estimate_3D_points(M, frames,Imf)
 close all
 count = 1;
 [m2,n] = size(M);
@@ -83,6 +83,9 @@ for i = 1:6:m2
     % % Update M and S
     % M = M*C;
     % S = pinv(C)*S;
+    
+    RGBvalues = getRGBValues(M,frames);
+    
     figure;
     plot3(S(1,:),S(2,:),S(3,:),'.b');
     if i == 31

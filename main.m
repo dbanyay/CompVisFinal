@@ -5,7 +5,7 @@ close all
 
 %Imf = loadImages(); % downscaled images for faster processing
 
-load('Imf') % load image matrix
+load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
 
 %% Feature detection and extraction of SIFT points
@@ -30,7 +30,7 @@ measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
 
 %% Stitching
 
-%[M,S] = estimate_3D_points(measurementMatrix);
+[M,S] = estimate_3D_points(measurementMatrix,frames,Imf);
 
 
 %% Apply bundle adjustment
