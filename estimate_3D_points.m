@@ -1,48 +1,32 @@
-function [M_matrix,S_matrix] = estimate_3D_points(M, frames,Imf)
+function [M_matrix,S_matrix] = estimate_3D_points(M,Imf)
 close all
 count = 1;
 [m2,n] = size(M);
 %save original M
 M_original = M;
 for i = 1:6:m2
-    if i == 1
+    count_found = 1;
+    if i <= 31
         for j = 1:n
-                if nnz(~(M_original(i:i+5,j))) <= 2
-                       M_set(1:6,j) = M_original(i:i+5,j);
-                else
-                    break;
-                end
-        end
-    elseif i < 31
-        count_found = 1;
-        for j = 1:n
-            if nnz(~(M_original(i:i+5,j))) <= 2
+            if nnz(~(M_original(i:i+5,j))) == 0
                 M_set(1:6,count_found) = M_original(i:i+5,j);
                 count_found = count_found + 1;
-                if nnz(~(M_original(i:i+5,j+1))) > 2 && count < 8
-                        count_found = 1;
-                end
-            elseif count_found >1
-                 break;
             end
         end
     end
     if i == 31
-         count_found = 1;
          for j = 1:n
-             if nnz(~(M_original(i:i+7,j))) <= 4
+             if nnz(~(M_original(i:i+7,j))) <= 2
                     M_set(1:8,count_found) = M_original(i:i+7,j);
                     count_found = count_found + 1;
-                    if j < n
-                        if nnz(~(M_original(i:i+7,j+1))) > 4 && count < 8
-                            count_found = 1;
-                        end
-                    end
-             elseif count_found > 1
-                    break;
              end
          end
     end
+    
+    % get RGB values for current feature points
+    RGBvalues = getRGBValues(M_set,Imf);
+        
+    
     % % %Shift the mean of the points to zero using "repmat" command
     MC = readMeasurementMatrix(M_set);
 
@@ -83,12 +67,15 @@ for i = 1:6:m2
     % % Update M and S
     % M = M*C;
     % S = pinv(C)*S;
-    
-    RGBvalues = getRGBValues(M,frames);
-    
+
     figure;
-    plot3(S(1,:),S(2,:),S(3,:),'.b');
+    hold on
+    for point = 1:size(S,2)
+    plot3(S(1,point),S(2,point),S(3,point),'Marker','.','Color',RGBvalues(:,point));
+    end
+    hold off
     if i == 31
         break;
     end
+    
 end

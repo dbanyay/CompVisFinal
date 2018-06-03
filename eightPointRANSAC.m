@@ -4,9 +4,7 @@ function bestMatches = eightPointRANSAC(Imf,frames,descs)
 
 
 %% Fundamental Matrix Estimation
-for frame = 1:size(Imf,3)-1
-    img1 = Imf(:,:,frame);
-    img2 = Imf(:,:,frame+1);
+for frame = 1:size(frames,3)-1
 
     frames1 = frames(:,:,frame);
     frames2 = frames(:,:,frame+1);

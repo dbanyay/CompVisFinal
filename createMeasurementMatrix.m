@@ -1,4 +1,4 @@
-function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
+function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,frames,descs)
 %createMeasurementMatrix Create neasurement matrix
 % an image sequence can be represented as a 2F x P measurement matrix W, which is made up of the
 % horizontal and vertical coordinates of P points tracked through F frames.
@@ -8,9 +8,7 @@ function measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs)
    
     prev_num_points = size(measurementMatrix,2);
     
-        chain_index_vector = 1:prev_num_points; 
-    
-
+        
         bestMatches(1:prev_num_points,7,1) = 1:prev_num_points;        
 
     

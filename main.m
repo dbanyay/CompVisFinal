@@ -25,12 +25,12 @@ bestMatches = eightPointRANSAC(Imf,frames,descs);
 
 
 %% Chaining
-measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
+[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
 
 %% Stitching
 
-[M,S] = estimate_3D_points(measurementMatrix,frames,Imf);
+[M,S] = estimate_3D_points(measurementMatrix,Imf);
 
 
 %% Apply bundle adjustment
