@@ -6,7 +6,7 @@ count = 1;
 M_original = M;
 for i = 1:6:m2
     count_found = 1;
-    if i <= 31
+    if i < 31
         for j = 1:n
             if nnz(~(M_original(i:i+5,j))) == 0
                 M_set(1:6,count_found) = M_original(i:i+5,j);
@@ -16,9 +16,9 @@ for i = 1:6:m2
     end
     if i == 31
          for j = 1:n
-             if nnz(~(M_original(i:i+7,j))) <= 2
-                    M_set(1:8,count_found) = M_original(i:i+7,j);
-                    count_found = count_found + 1;
+             if nnz(~(M_original(i:i+7,j))) == 0
+                M_set(1:8,count_found) = M_original(i:i+7,j);
+                count_found = count_found + 1;
              end
          end
     end
@@ -42,10 +42,10 @@ for i = 1:6:m2
     M_set = U*sqrtm(W);
     S = sqrtm(W)*V;
 
-    save('M_set','M_set') %???
+    save('M_set','M_set') %used for myfun.m
     
     % % %solve for affine ambiguity
-    A = M(1:2,:);        %A = A1
+    A = M_set(1:2,:);        %A = A1
     Id = diag(ones(1:2));    
     L0= pinv(A)*Id*pinv(A');         %Ai*L0*Ait = Id
     
