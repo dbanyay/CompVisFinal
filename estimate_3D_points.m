@@ -6,7 +6,7 @@ count = 1;
 M_original = M;
 for i = 1:6:m2
     count_found = 1;
-    if i <= 31
+    if i < 31
         for j = 1:n
             if nnz(~(M_original(i:i+5,j))) == 0
                 M_set(1:6,count_found) = M_original(i:i+5,j);
@@ -16,7 +16,7 @@ for i = 1:6:m2
     end
     if i == 31
          for j = 1:n
-             if nnz(~(M_original(i:i+7,j))) <= 2
+             if nnz(~(M_original(i:i+7,j))) == 0
                     M_set(1:8,count_found) = M_original(i:i+7,j);
                     count_found = count_found + 1;
              end

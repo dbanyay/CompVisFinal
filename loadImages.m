@@ -5,7 +5,8 @@ function Imf = loadImages()
 cntr = 1;
 
 for num = 586:604
-    imageLoc = ['model_castle_small\8ADT8' num2str(num) '.JPG'];
+    %imageLoc = ['model_castle_small\8ADT8' num2str(num) '.JPG'];
+    imageLoc = ['model_castle\8ADT8' num2str(num) '.JPG'];
     im = imread(imageLoc);
     %imwrite(im, ['8ADT8' num2str(num) '.ppm']);
     if num == 1
