@@ -21,13 +21,13 @@ load('frames')
 
 %% Apply normalized 8-point RANSAC and find best matches
 
-bestMatches = eightPointRANSAC(Imf,frames,descs);
+%bestMatches = eightPointRANSAC(Imf,frames,descs);
 
 
 %% Chaining
-[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
+%[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
-
+load('measurementMatrix')
 %% Stitching
 
 [M,S] = estimate_3D_points(measurementMatrix,Imf);

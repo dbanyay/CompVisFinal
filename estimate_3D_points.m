@@ -72,6 +72,7 @@ for i = 1:6:m2
     hold on
     for point = 1:size(S,2)
     plot3(S(1,point),S(2,point),S(3,point),'Marker','.','Color',RGBvalues(:,point));
+    %plot3(S(1,point),S(2,point),S(3,point),'.b');
     end
     hold off
     

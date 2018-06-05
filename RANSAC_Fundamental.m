@@ -2,7 +2,7 @@ function [F, inlier_index] = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i
 
     nummatches = 8;
 
-    for repeat = 1:10
+    for repeat = 1:50
 
         randindex = randperm(max(size(p_i)),nummatches); %select 8 unique indexes randomly
         
@@ -14,7 +14,7 @@ function [F, inlier_index] = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i
         end
         F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, T_new, 'd');  %denormalized F
         
-        threshold = 50; 
+        threshold = 100; 
         inliercntr = 0;
         for i = 1:length(p_i)
             c1 = F_eight*[coord_img1(:,i);1]; %Fpi
