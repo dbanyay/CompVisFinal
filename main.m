@@ -23,11 +23,11 @@ load('frames')
 
 %bestMatches = eightPointRANSAC(Imf,frames,descs);
 
-
+load('bestMatches')
 %% Chaining
-%[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
+[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
-load('measurementMatrix')
+%load('measurementMatrix')
 %% Stitching
 
 [M,S] = estimate_3D_points(measurementMatrix,Imf);
