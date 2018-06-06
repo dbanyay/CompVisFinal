@@ -4,22 +4,13 @@ count = 1;
 [m2,n] = size(M);
 %save original M
 M_original = M;
-for i = 1:6:m2
+for i = 1:2:m2-4
     count_found = 1;
-    if i < 31
-        for j = 1:n
-            if nnz(~(M_original(i:i+5,j))) == 0
+    for j = 1:n
+         if nnz(~(M_original(i:i+5,j))) == 0
+             i:i+5
                 M_set(1:6,count_found) = M_original(i:i+5,j);
                 count_found = count_found + 1;
-            end
-        end
-    end
-    if i == 31
-         for j = 1:n
-             if nnz(~(M_original(i:i+7,j))) == 0
-                    M_set(1:8,count_found) = M_original(i:i+7,j);
-                    count_found = count_found + 1;
-             end
          end
     end
     
@@ -49,13 +40,13 @@ for i = 1:6:m2
     Id = diag(ones(1:2));    
     L0= pinv(A)*Id*pinv(A');         %Ai*L0*Ait = Id
     
-    % Solve for L
-    L = lsqnonlin(@myfun,L0);
-    % Recover C
-    C = chol(L,'lower');
-    % Update M and S
-    M_set = M_set*C;
-    S = pinv(C)*S;
+%     % Solve for L
+%     L = lsqnonlin(@myfun,L0);
+%     % Recover C
+%     C = chol(L,'lower');
+%     % Update M and S
+%     M_set = M_set*C;
+%     S = pinv(C)*S;
     
     
     
@@ -83,10 +74,4 @@ for i = 1:6:m2
     % reset M
     M_set = [];
 
-    %figure;
-
-    
-    if i == 31
-        break;
-    end
 end
