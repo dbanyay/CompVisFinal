@@ -44,25 +44,23 @@ for i = 1:6:m2
 
     save('M_set','M_set') %???
     
-%     % % %solve for affine ambiguity
-%     A = M(1:2,:);        %A = A1
-%     Id = diag(ones(1:2));    
-%     L0= pinv(A)*Id*pinv(A');         %Ai*L0*Ait = Id
-%     
-%     % Solve for L
-%     L = lsqnonlin(@myfun,L0);
-%     % Recover C
-%     C = chol(L,'lower');
-%     % Update M and S
-%     M_set = M_set*C;
-%     S = pinv(C)*S;
+    % % %solve for affine ambiguity
+    A = M_set(1:2,:);        %A = A1
+    Id = diag(ones(1:2));    
+    L0= pinv(A)*Id*pinv(A');         %Ai*L0*Ait = Id
     
-    if length(M_set) == 6
-        M_set = [M_set;zeros(2,3)];
-    end
+    % Solve for L
+    L = lsqnonlin(@myfun,L0);
+    % Recover C
+    C = chol(L,'lower');
+    % Update M and S
+    M_set = M_set*C;
+    S = pinv(C)*S;
     
-    M_matrix(1:8,1:3,count) = M_set;
-    S_matrix(1:size(S,1),1:size(S,2),count) = S;
+    
+    
+    M_matrix{count} = M_set;
+    S_matrix{count} = S;
     
     count = count + 1;
     % reset M
