@@ -9,16 +9,16 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
     prev_num_points = size(measurementMatrix,2);
     
         
-        bestMatches(1:prev_num_points,7,1) = 1:prev_num_points;        
+    bestMatches(1:prev_num_points,7,1) = 1:prev_num_points;        
 
     
-    for frame = 2:size(frames,3) -1
+    for frame = 2:size(frames,3)
         prev_matches = bestMatches(:,6,frame-1); % frame indexes from first pic
-        prev_matches = prev_matches(prev_matches ~= 0); % remove zeros
-        
+        prev_matches = prev_matches(prev_matches ~= 0); % remove zeros        
+
         cur_matches = bestMatches(:,5,frame);% frame indexes from second pic
         cur_matches = cur_matches(cur_matches ~= 0); % remove zeros
-        
+
         cur_num_points = length(cur_matches);
         % this is the number of the matches found in bestMatches for second
         % image       
@@ -30,8 +30,13 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
                 
         for i = 1:length(IA)            
           
-            measurementMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
-            bestMatches(IB(i),7,frame) = bestMatches(IA(i),7,frame-1);
+            if frame == size(frames,3)
+                measurementMatrix(1:2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
+
+            else            
+                measurementMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
+                bestMatches(IB(i),7,frame) = bestMatches(IA(i),7,frame-1);
+            end
        
         end     
         % fill in values that match with the previous frame 
@@ -47,6 +52,8 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
             end   
         end  
                      
-    end   
+    end
+    
+
 end
 

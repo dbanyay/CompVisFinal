@@ -10,5 +10,7 @@ while cntr <= size(M,2)
     cntr = cntr + 1;
 end
 
+RGBvalues = RGBvalues./255;
+
 end
 

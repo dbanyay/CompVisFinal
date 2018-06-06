@@ -4,13 +4,19 @@ function bestMatches = eightPointRANSAC(Imf,frames,descs)
 
 
 %% Fundamental Matrix Estimation
-for frame = 1:size(frames,3)-1
-
-    frames1 = frames(:,:,frame);
-    frames2 = frames(:,:,frame+1);
-
-    desc1 = descs(:,:,frame);
-    desc2 = descs(:,:,frame+1);
+for frame = 1:size(frames,3)
+    
+    if frame == size(frames,3)        
+        frames1 = frames(:,:,frame);
+        frames2 = frames(:,:,1);
+        desc1 = descs(:,:,frame);
+        desc2 = descs(:,:,1);        
+    else
+        frames1 = frames(:,:,frame);
+        frames2 = frames(:,:,frame+1);
+        desc1 = descs(:,:,frame);
+        desc2 = descs(:,:,frame+1);
+    end
 
     [matches, scores] = vl_ubcmatch (desc1, desc2);  
     %nummatches = 20; % number of random selected matches  

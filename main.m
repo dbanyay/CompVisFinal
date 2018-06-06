@@ -3,7 +3,7 @@ close all
 
 %% Load images
 
-%Imf = loadImages(); %
+% Imf = loadImages(); %
 
 load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
@@ -23,11 +23,11 @@ load('frames')
 
 bestMatches = eightPointRANSAC(Imf,frames,descs);
 
-
+load('bestMatches')
 %% Chaining
 [measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
-
+load('measurementMatrix')
 %% Stitching
 
 [M,S] = estimate_3D_points(measurementMatrix,Imf);
