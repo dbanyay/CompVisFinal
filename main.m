@@ -3,7 +3,7 @@ close all
 
 %% Load images
 
-%Imf = loadImages(); % downscaled images for faster processing
+% Imf = loadImages(); %
 
 load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
@@ -12,7 +12,7 @@ load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
 %[frames, descs] = extractSIFT(Imf); % using vl_feat
 
-%[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
+[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
 
 load('descs')
 load('frames')
@@ -21,11 +21,11 @@ load('frames')
 
 %% Apply normalized 8-point RANSAC and find best matches
 
-%bestMatches = eightPointRANSAC(Imf,frames,descs);
+bestMatches = eightPointRANSAC(Imf,frames,descs);
 
 load('bestMatches')
 %% Chaining
-%[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
+[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
 load('measurementMatrix')
 %% Stitching
