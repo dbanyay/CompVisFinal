@@ -62,17 +62,29 @@ for i = 1:6:m2
     M_matrix{count} = M_set;
     S_matrix{count} = S;
     
+    if count > 1
+        [d,S_transformed{count-1}] = procrustes(S_matrix{count},S_matrix{count});
+        
+        hold on
+        for point = 1:size(S,2)
+            plot3(S_transformed{count-1}(1,point),S_transformed{count-1}(2,point),S_transformed{count-1}(3,point),'Marker','.','Color',RGBvalues(:,point));
+        end
+        hold off
+    else
+        hold on
+        for point = 1:size(S,2)
+        plot3(S(1,point),S(2,point),S(3,point),'Marker','.','Color',RGBvalues(:,point));
+        %plot3(S(1,point),S(2,point),S(3,point),'.b');
+        end
+        hold off
+    end
+    
     count = count + 1;
     % reset M
     M_set = [];
 
-    figure;
-    hold on
-    for point = 1:size(S,2)
-    plot3(S(1,point),S(2,point),S(3,point),'Marker','.','Color',RGBvalues(:,point));
-    %plot3(S(1,point),S(2,point),S(3,point),'.b');
-    end
-    hold off
+    %figure;
+
     
     if i == 31
         break;
