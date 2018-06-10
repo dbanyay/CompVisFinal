@@ -4,25 +4,25 @@ count = 1;
 [m2,n] = size(M);
 %save original M
 M_original = M;
-for i = 1:2:m2-4
+for i = 1:6:m2-7
     count_found = 1;
-    for j = 1:n
-         if nnz(~(M_original(i:i+5,j))) == 0            
-            M_set(1:6,count_found) = M_original(i:i+5,j);
-            count_found = count_found + 1;            
+    if i < 31
+        for j = 1:n
+            if nnz(~(M_original(i:i+5,j))) == 0
+                M_set(1:6,count_found) = M_original(i:i+5,j);
+                count_found = count_found + 1;
+            end
         end
     end
     if i == 31
          for j = 1:n
              if nnz(~(M_original(i:i+7,j))) == 0
-
-                M_set(1:8,count_found) = M_original(i:i+7,j);
-                count_found = count_found + 1;
-
+                    M_set(1:8,count_found) = M_original(i:i+7,j);
+                    count_found = count_found + 1;
              end
-
          end
     end
+
     
     % get RGB values for current feature points
     RGBvalues = getRGBValues(M_set,Imf);
