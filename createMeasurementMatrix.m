@@ -54,6 +54,7 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
                      
     end
     
-save('measurementMatrix','measurementMatrix')
+% save('measurementMatrix','measurementMatrix')
+% save('bestMatches','bestMatches')
 end
 

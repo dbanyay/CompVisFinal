@@ -1,12 +1,27 @@
 clear all
 close all
 
+ load('b_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+ load('b_descs')
+ load('b_frames')
+ load('b_bestMatches')
+%  load('measurementMatrix')
+%  load('S_matrix')
+%  load('RGBvalues')
+
+%  load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+%  load('c_descs')
+%  load('c_frames')
+%  load('c_bestMatches')
+%  load('measurementMatrix')
+%  load('S_matrix')
+%  load('RGBvalues')
+
+
+
 %% Load images
 
-%Imf = loadImages(); %
-
-load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
-
+%Imf = loadImages();
 
 %% Feature detection and extraction of SIFT points
 
@@ -14,26 +29,18 @@ load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
 %[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
 
-load('descs')
-load('frames')
-
-
-
 %% Apply normalized 8-point RANSAC and find best matches
 
-bestMatches = eightPointRANSAC(Imf,frames,descs);
+%bestMatches = eightPointRANSAC(Imf,frames,descs);
 
-load('bestMatches')
+
 %% Chaining
 [measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
-load('measurementMatrix')
+
 %% Stitching
 
-[M,S,RGBvalues] = estimate_3D_points(measurementMatrix,Imf);
-
-load('S_matrix')
-load('RGBvalues')
+[M,S_matrix,RGBvalues] = estimate_3D_points(measurementMatrix,Imf);
 
 plot3DPoints(Imf,S_matrix,RGBvalues);
 

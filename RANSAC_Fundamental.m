@@ -1,8 +1,8 @@
 function [F, inlier_index] = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i_prime, T, T_new)
 
-    nummatches = 20;
+    nummatches = 8;
 
-    for repeat = 1:50
+    for repeat = 1:100
 
         randindex = randperm(max(size(p_i)),nummatches); %select 8 unique indexes randomly
         
