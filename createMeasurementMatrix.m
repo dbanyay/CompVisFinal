@@ -54,6 +54,6 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
                      
     end
     
-
+save('measurementMatrix','measurementMatrix')
 end
 

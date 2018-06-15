@@ -3,7 +3,7 @@ close all
 
 %% Load images
 
- %Imf = loadImages(); %
+%Imf = loadImages(); %
 
 load('Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
@@ -21,17 +21,21 @@ load('frames')
 
 %% Apply normalized 8-point RANSAC and find best matches
 
-%bestMatches = eightPointRANSAC(Imf,frames,descs);
+bestMatches = eightPointRANSAC(Imf,frames,descs);
 
 load('bestMatches')
 %% Chaining
-%[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
+[measurementMatrix,bestMatches] = createMeasurementMatrix(bestMatches,frames,descs);
 
 load('measurementMatrix')
 %% Stitching
 
-[M,S] = estimate_3D_points(measurementMatrix,Imf);
+[M,S,RGBvalues] = estimate_3D_points(measurementMatrix,Imf);
 
+load('S_matrix')
+load('RGBvalues')
+
+plot3DPoints(Imf,S_matrix,RGBvalues);
 
 %% Apply bundle adjustment
 

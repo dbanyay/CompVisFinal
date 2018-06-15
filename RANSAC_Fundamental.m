@@ -1,6 +1,6 @@
 function [F, inlier_index] = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i_prime, T, T_new)
 
-    nummatches = 8;
+    nummatches = 20;
 
     for repeat = 1:50
 
@@ -14,7 +14,7 @@ function [F, inlier_index] = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i
         end
         F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, T_new, 'd');  %denormalized F
         
-        threshold = 100; 
+        threshold = 50; 
         inliercntr = 0;
         match1 = [coord_img1;ones(1,length(coord_img1))];
         match2 = [coord_img2;ones(1,length(coord_img1))];

@@ -18,7 +18,7 @@ for frame = 1:size(frames,3)
         desc2 = descs(:,:,frame+1);
     end
 
-    [matches, scores] = vl_ubcmatch (desc1, desc2);  
+    [matches, scores] = vl_ubcmatch (desc1, desc2,1);  
     %nummatches = 20; % number of random selected matches  
     %randindexes = randperm(max(size(matches)),nummatches);
     nummatches = max(size(matches));
@@ -30,9 +30,9 @@ for frame = 1:size(frames,3)
 %      newMatchesy =  randmatches(2,:);
 %      newMatches = [newMatchesx ; newMatchesy];
      
-     %plot the different of random matches in two images
-     %figure(1);
-     %plotDiff(img1,newMatches,frames1,frames2)
+%      %plot the different of random matches in two images
+%      %figure(1);
+%      %plotDiff(img1,newMatches,frames1,frames2)
     
      coord_img1 = zeros(2,nummatches);
      coord_img2 = zeros(2,nummatches);
@@ -89,6 +89,7 @@ for frame = 1:size(frames,3)
                 inliers_matches(i,:) = [matches(:,inlier_index(i))'];
      end
      bestMatches(1:size(inliers_img1,1),1:6,frame) = [inliers_img1 inliers_img2 inliers_matches];
+     plotError(Imf(:,:,1,frame),bestMatches(:,:,frame));
 
      % first feature point coordinates, second feature point coordinates,
      % indexes from original frame
@@ -136,5 +137,5 @@ for frame = 1:size(frames,3)
 end
 
 
-
+save('bestMatches','bestMatches')
 end
