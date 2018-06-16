@@ -1,12 +1,28 @@
 clear all
 close all
 
-%% Load images
+ load('b_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+ load('b_descs')
+ load('b_frames')
+ load('b_bestMatches')
+%  load('measurementMatrix')
+%  load('S_matrix')
+%  load('RGBvalues')
 
- %Imf = loadImages(); %
+%  load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+%  load('c_descs')
+%  load('c_frames')
+%  load('c_bestMatches')
+%  load('measurementMatrix')
+%  load('S_matrix')
+%  load('RGBvalues')
 
 load('Imf_teddy') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 
+
+%% Load images
+
+%Imf = loadImages();
 
 %% Feature detection and extraction of SIFT points
 
@@ -18,12 +34,11 @@ load('descs_teddy')
 load('frames_teddy')
 
 
-
 %% Apply normalized 8-point RANSAC and find best matches
 
 % bestMatches = eightPointRANSAC(Imf,frames,descs);
 
-load('bestMatches')
+
 %% Chaining
 measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
 
@@ -52,7 +67,6 @@ for i = 1:2:25
 end
 
 plot3Dpoints(S_matrix, correspond_indexes, RGBvalues);
-
 
 %% Apply bundle adjustment
 
