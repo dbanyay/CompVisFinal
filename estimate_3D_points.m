@@ -13,7 +13,7 @@ for j = 1:n
 end
     
     % get RGB values for current feature points
-    RGBvalues{count} = getRGBValues(M_set,Imf);
+    RGBvalues = getRGBValues(M_set,Imf);
         
     
     % % %Shift the mean of the points to zero using "repmat" command
@@ -44,9 +44,5 @@ end
     % Update M and S
     M_set = M_set*C;
     S = pinv(C)*S;
-    
-    count = count + 1;
-    % reset M
-    M_set = [];
 end
 

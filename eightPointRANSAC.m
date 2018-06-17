@@ -18,78 +18,49 @@ for frame = 1:size(frames,3)
         desc2 = descs(:,:,frame+1);
     end
 
-    [matches, scores] = vl_ubcmatch (desc1, desc2,1);  
-    %nummatches = 20; % number of random selected matches  
-    %randindexes = randperm(max(size(matches)),nummatches);
-    nummatches = max(size(matches));
-%     for j = 1:nummatches
-%         randmatches(:,j) = matches(:,randindexes(j));
-%     end
+    [matches, scores] = vl_ubcmatch(desc1, desc2, 1.4); %1.5 is default threshold
 
-%      newMatchesx =  randmatches(1,:);
-%      newMatchesy =  randmatches(2,:);
-%      newMatches = [newMatchesx ; newMatchesy];
-     
-%      %plot the different of random matches in two images
-%      %figure(1);
-%      %plotDiff(img1,newMatches,frames1,frames2)
-    
+    nummatches = max(size(matches));
+
      coord_img1 = zeros(2,nummatches);
      coord_img2 = zeros(2,nummatches);
 
-     for i = 1:nummatches
-        coord_img1(1,i) = frames1(1,matches(1,i)); %x coordinates of matched points in img1
-        coord_img1(2,i) = frames1(2,matches(1,i)); %y coordinates of matched points in img1
-        coord_img2(1,i) = frames2(1,matches(2,i)); %x coordinates of matched points in img2
-        coord_img2(2,i) = frames2(2,matches(2,i)); %y coordinates of matched points in img2
-     end
+     coord_img1(1,:) = frames1(1,matches(1,:)); %x coordinates of matched points in img1
+     coord_img1(2,:) = frames1(2,matches(1,:)); %y coordinates of matched points in img1
+     coord_img2(1,:) = frames2(1,matches(2,:)); %x coordinates of matched points in img2
+     coord_img2(2,:) = frames2(2,matches(2,:)); %y coordinates of matched points in img2
+
 
     %% Normalized Eight-point Algorithm using RANSAC
      m_x = mean(coord_img1(1,:));
      m_y = mean(coord_img1(2,:));
-     d_sum = 0;
-     for i = 1:nummatches
-        d_sum = d_sum + sqrt( (coord_img1(1,i)-m_x)^2 + (coord_img1(2,i)-m_y)^2 );
-     end
+     d_sum = sum(sqrt( (coord_img1(1,:)-m_x).^2 + (coord_img1(2,:)-m_y).^2 ));
      d_1 = d_sum/nummatches;
      T = [sqrt(2)/d_1 0 -m_x*sqrt(2)/d_1; 0 sqrt(2)/d_1 -m_y*sqrt(2)/d_1; 0 0 1 ];     
      p_i = zeros(3,nummatches); %normalized coordiantes of img1
-     for i = 1:nummatches
-        x = coord_img1(1,i); %coordinate x
-        y = coord_img1(2,i); %coordinate y
-        z = 1;
-        p_i(:,i) = T*[x;y;z];
-     end
+     p_i = T*[coord_img1(1,:);coord_img1(2,:);ones(1,nummatches)];
      p_i = p_i(1:2,:);
 
      m_x_new = mean(coord_img2(1,:)); 
      m_y_new = mean(coord_img2(2,:)); 
-     d_sum = 0;
-     for i = 1:nummatches
-        d_sum = d_sum + sqrt( (coord_img2(1,i)-m_x_new)^2 + (coord_img2(2,i)-m_y_new)^2 );
-     end
+     d_sum = sum(sqrt( (coord_img2(1,:)-m_x_new).^2 + (coord_img2(2,:)-m_y_new).^2 ));
      d_new = d_sum/nummatches;
      T_new = [sqrt(2)/d_new 0 -m_x_new*sqrt(2)/d_new; 0 sqrt(2)/d_new -m_y_new*sqrt(2)/d_new; 0 0 1 ];  
      p_i_prime = zeros(3,nummatches);%normalized coordinates of img2
-     for i = 1:nummatches
-        x = coord_img2(1,i); %coordinate x'
-        y = coord_img2(2,i); %coordinate y'
-        z = 1;
-        p_i_prime(:,i) = T_new*[x;y;z];
-     end
+     p_i_prime = T_new*[coord_img2(1,:);coord_img2(2,:);ones(1,nummatches)];
      p_i_prime = p_i_prime(1:2,:);
     
      coord_img1 = coord_img1';
      coord_img2 = coord_img2';
     
-     [F_ransac, inlier_index] = RANSAC_Fundamental(coord_img1', coord_img2', p_i, p_i_prime, T, T_new);
-     for i = 1:length(inlier_index)
-                inliers_img1(i,:) = [coord_img1(inlier_index(i),:)];
-                inliers_img2(i,:) = [coord_img2(inlier_index(i),:)];
-                inliers_matches(i,:) = [matches(:,inlier_index(i))'];
-     end
+     inlier_index = RANSAC_Fundamental(coord_img1', coord_img2', p_i, p_i_prime, T, T_new);
+
+     inliers_img1 = [coord_img1(inlier_index,:)];
+     inliers_img2 = [coord_img2(inlier_index,:)];
+     inliers_matches = [matches(:,inlier_index)'];
+
      bestMatches(1:size(inliers_img1,1),1:6,frame) = [inliers_img1 inliers_img2 inliers_matches];
-     plotError(Imf(:,:,1,frame),bestMatches(:,:,frame));
+%      plotError(Imf(:,:,1,frame),bestMatches(:,:,frame));
 
      % first feature point coordinates, second feature point coordinates,
      % indexes from original frame
@@ -137,5 +108,5 @@ for frame = 1:size(frames,3)
 end
 
 
-save('bestMatches','bestMatches')
+% save('bestMatches','bestMatches')
 end

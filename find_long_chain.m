@@ -13,4 +13,8 @@ for j = 1:n
        end
 end
 
+if count_found == 1
+    long_chain_index = 0;
+end
+
 end
