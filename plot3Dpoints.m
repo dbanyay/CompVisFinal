@@ -4,12 +4,12 @@ hold on
 for point = 1:size(S_matrix{1},2)
     plot3(S_matrix{1}(1,point),S_matrix{1}(2,point),S_matrix{1}(3,point),'Marker','.','Color',RGBvalues{1}(:,point));
 end
-hold off
+
 S_transformed{1} = S_matrix{1};
 count = 1;
 while count < length(S_matrix)
         correspond_index = correspond_indexes{count};
-        if size(correspond_index,1) ~= 0 
+        if size(correspond_index,1) == 2 %there are corresponding indexes
             S_1 = S_transformed{count};
             S_1 = S_1(:,correspond_index(1,:));
             S_2 = S_matrix{count+1};
@@ -18,7 +18,7 @@ while count < length(S_matrix)
             transform_info = transform{count};
             transformed_S = transform_info.b*S_matrix{count+1}'*transform_info.T + mean(transform_info.c,1);
             S_transformed{count+1} = transformed_S';
-        else
+        else  %there are no corresponding indexes
             S_transformed{count+1} = S_transformed{count};
         end
         
@@ -31,3 +31,5 @@ while count < length(S_matrix)
     
     count = count + 1;
 end
+
+

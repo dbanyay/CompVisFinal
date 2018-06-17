@@ -2,10 +2,10 @@ function inlier_index = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i_prim
 
     nummatches = 8;
     
-
     for repeat = 1:100
         %pick 8 point correspondences randomly to construct a fundamental
         %matrix F (denormalized F)
+
         randindex = randperm(max(size(p_i)),nummatches); %select 8 unique indexes randomly
 
         p_i_eight = [p_i(:,randindex);ones(1,nummatches)];
@@ -13,7 +13,7 @@ function inlier_index = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i_prim
 
         F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, T_new, 'd');  %denormalized F
         
-        threshold = 25; 
+        threshold = 40; 
         match1 = [coord_img1;ones(1,length(coord_img1))];
         match2 = [coord_img2;ones(1,length(coord_img1))];
         nom = (diag(match2'*(F_eight*match1))').^2;

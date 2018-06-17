@@ -1,9 +1,9 @@
 clear all
 close all
 
- load('b_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
- load('b_descs')
- load('b_frames')
+ load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+ load('c_descs')
+ load('c_frames')
 %  load('b_bestMatches')
 %  load('measurementMatrix')
 %  load('S_matrix')
@@ -49,20 +49,19 @@ measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
 % [M,S] = estimate_3D_points(measurementMatrix,Imf);
 [m2,n] = size(measurementMatrix);
 count = 1;
-for i = 1:2:m2-1
+for i = 1:2:m2-3
     switch i
         case m2-3 
             M_set(1:4,:) = measurementMatrix(i:i+3,:);
             M_set(5:6,:) = measurementMatrix(1:2,:); %TODO
             M_long = [measurementMatrix(i:i+3,:); measurementMatrix(1:4,:)];
         case m2-5
-            M_set(1:4,:) = measurementMatrix(i:i+3,:);
-            M_set(5:6,:) = measurementMatrix(1:2,:); %TODO
+            M_set(1:6,:) = measurementMatrix(i:i+5,:);
             M_long = [measurementMatrix(i:i+5,:); measurementMatrix(1:2,:)];
-        case m2-1
-            M_set(1:2,:) = measurementMatrix(i:i+1,:);
-            M_set(3:6,:) = measurementMatrix(1:4,:); %TODO
-            M_long = 0;
+%         case m2-1
+%             M_set(1:2,:) = measurementMatrix(i:i+1,:);
+%             M_set(3:6,:) = measurementMatrix(1:4,:); %TODO
+%             M_long = [measurementMatrix(i:i+1,:);measurementMatrix(1:6,:)];
         otherwise
             M_set = measurementMatrix(i:i+5,:);
             M_long = measurementMatrix(i:i+7,:);
