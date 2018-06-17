@@ -1,8 +1,10 @@
-function [M, S, RGBvalues, short_chain_index] = estimate_3D_points(M,Imf)
+function [M, S, RGBvalues, short_chain_index] = estimate_3D_points(M,Imf,frame)
 
 [m2,n] = size(M);
 %save original M
 M_original = M;
+
+
 count_found = 1;
 for j = 1:n
        if nnz(~(M_original(:,j))) == 0
@@ -13,7 +15,7 @@ for j = 1:n
 end
     
     % get RGB values for current feature points
-    RGBvalues = getRGBValues(M_set,Imf);
+    RGBvalues = getRGBValues(M_set,Imf,frame);
         
     
     % % %Shift the mean of the points to zero using "repmat" command
@@ -32,17 +34,20 @@ end
     S = sqrtm(W)*V;
 
     save('M_set','M_set') %used for myfun.m
-   
-    % % %solve for affine ambiguity
-    A = M_set(1:2,:);        %A = A1
-    Id = diag(ones(1:2));    
-    L0= pinv(A)*Id*pinv(A'); %Ai*L0*Ait = Id     
-    % Solve for L
-    L = lsqnonlin(@myfun,L0);
-    % Recover C
-    C = chol(L,'lower');
-    % Update M and S
-    M_set = M_set*C;
-    S = pinv(C)*S;
+   try
+        % % %solve for affine ambiguity
+        A = M_set(1:2,:);        %A = A1
+        Id = diag(ones(1:2));    
+        L0= pinv(A)*Id*pinv(A'); %Ai*L0*Ait = Id     
+        % Solve for L
+        L = lsqnonlin(@myfun,L0);
+        % Recover C
+        C = chol(L,'lower');
+        % Update M and S
+        M_set = M_set*C;
+        S = pinv(C)*S;
+   catch
+       warning("affine ambiguity elimination failed")
+   end
 end
 

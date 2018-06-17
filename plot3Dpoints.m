@@ -9,7 +9,7 @@ S_transformed{1} = S_matrix{1};
 count = 1;
 while count < length(S_matrix)
         correspond_index = correspond_indexes{count};
-        if correspond_index ~= 0
+        if size(correspond_index,1) ~= 0 
             S_1 = S_transformed{count};
             S_1 = S_1(:,correspond_index(1,:));
             S_2 = S_matrix{count+1};

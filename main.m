@@ -38,20 +38,38 @@ close all
 
 bestMatches = eightPointRANSAC(Imf,frames,descs);
 % load('bestMatches');
+% load('b_bestMatches');
 
 %% Chaining
 measurementMatrix = createMeasurementMatrix(bestMatches,frames,descs);
 
-% load('measurementMatrix')
+% load('b_measurementMatrix')
 %% Stitching
 
 % [M,S] = estimate_3D_points(measurementMatrix,Imf);
 [m2,n] = size(measurementMatrix);
 count = 1;
-for i = 1:2:27
-    M_set = measurementMatrix(i:i+5,:);
-    [M, S, RGBvalue,short_chain_index] = estimate_3D_points(M_set,Imf);
-    M_long = measurementMatrix(i:i+7,:);
+for i = 1:2:m2-1
+    switch i
+        case m2-3 
+            M_set(1:4,:) = measurementMatrix(i:i+3,:);
+            M_set(5:6,:) = measurementMatrix(1:2,:); %TODO
+            M_long = [measurementMatrix(i:i+3,:); measurementMatrix(1:4,:)];
+        case m2-5
+            M_set(1:4,:) = measurementMatrix(i:i+3,:);
+            M_set(5:6,:) = measurementMatrix(1:2,:); %TODO
+            M_long = [measurementMatrix(i:i+5,:); measurementMatrix(1:2,:)];
+        case m2-1
+            M_set(1:2,:) = measurementMatrix(i:i+1,:);
+            M_set(3:6,:) = measurementMatrix(1:4,:); %TODO
+            M_long = 0;
+        otherwise
+            M_set = measurementMatrix(i:i+5,:);
+            M_long = measurementMatrix(i:i+7,:);
+    end
+    
+    [M, S, RGBvalue,short_chain_index] = estimate_3D_points(M_set,Imf,i);
+    
     long_chain_index = find_long_chain(M_long);
     if long_chain_index ~= 0
         intersected_index = intersect(short_chain_index,long_chain_index);
