@@ -13,7 +13,7 @@ function inlier_index = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i_prim
 
         F_eight = getFundamentalM(p_i_eight, p_i_prime_eight, T, T_new, 'd');  %denormalized F
         
-        threshold = 40; 
+        threshold = 50; 
         match1 = [coord_img1;ones(1,length(coord_img1))];
         match2 = [coord_img2;ones(1,length(coord_img1))];
         nom = (diag(match2'*(F_eight*match1))').^2;

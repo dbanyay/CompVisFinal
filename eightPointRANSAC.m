@@ -60,28 +60,10 @@ for frame = 1:size(frames,3)
      inliers_matches = [matches(:,inlier_index)'];
 
      bestMatches(1:size(inliers_img1,1),1:6,frame) = [inliers_img1 inliers_img2 inliers_matches];
-%      plotError(Imf(:,:,1,frame),bestMatches(:,:,frame));
-
+%      plotError(Imf(:,:,1,frame),bestMatches(:,:,frame))
+%      F_ransac = getFundamentalM(p_i(:,inlier_index), p_i_prime(:,inlier_index), T, T_new, 'd'); 
      % first feature point coordinates, second feature point coordinates,
      % indexes from original frame
-     
-
-%      figure;
-%      subplot(121);
-%      imshow(img1); 
-%      title('Inliers and Epipolar Lines in First Image'); hold on;
-%      plot(inliers_img1(:,1),inliers_img1(:,2),'go')
-%      epiLines = epipolarLine(F_ransac,inliers_img1);
-%      points = lineToBorderPoints(epiLines,size(img1));
-%      line(points(:,[1,3])',points(:,[2,4])');
-% 
-%      subplot(122); 
-%      imshow(img2);
-%      title('Inliers and Epipolar Lines in Second Image'); hold on;
-%      plot(inliers_img2(:,1),inliers_img2(:,2),'go')
-%      epiLines = epipolarLine(F_ransac,inliers_img2);
-%      points = lineToBorderPoints(epiLines,size(img2));
-%      line(points(:,[1,3])',points(:,[2,4])');
 
      
 %      figure(2);

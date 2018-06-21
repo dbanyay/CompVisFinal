@@ -1,12 +1,12 @@
-function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,frames,descs)
+function [pointViewMatrix, bestMatches] = createpointViewMatrix(bestMatches,frames,descs)
 %createMeasurementMatrix Create neasurement matrix
 % an image sequence can be represented as a 2F x P measurement matrix W, which is made up of the
 % horizontal and vertical coordinates of P points tracked through F frames.
 
-    measurementMatrix = bestMatches(:,1:4,1)'; % fill in first 2 rows with frame 1-2 indices of best matches   
-    measurementMatrix = reshape(measurementMatrix(measurementMatrix ~= 0),4,[]); % remove zeros
+    pointViewMatrix = bestMatches(:,1:4,1)'; % fill in first 2 rows with frame 1-2 indices of best matches   
+    pointViewMatrix = reshape(pointViewMatrix(pointViewMatrix ~= 0),4,[]); % remove zeros
    
-    prev_num_points = size(measurementMatrix,2);
+    prev_num_points = size(pointViewMatrix,2);
     
         
     bestMatches(1:prev_num_points,7,1) = 1:prev_num_points;  % save indexes in measurement matrix
@@ -33,24 +33,24 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
         for i = 1:length(IA)            
           
             if frame == size(frames,3)
-                measurementMatrix(1:2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
+                pointViewMatrix(1:2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
                 bestMatches(IB(i),7,frame) = bestMatches(IA(i),7,frame-1);
 
             else 
-                measurementMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
+                pointViewMatrix((frame+1)*2-1:(frame+1)*2,bestMatches(IA(i),7,frame-1)) = bestMatches(IB(i),3:4,frame)'; 
                 bestMatches(IB(i),7,frame) = bestMatches(IA(i),7,frame-1);
             end
        
         end     
         % fill in values that match with the previous frame 
         
-        cntr = size(measurementMatrix,2)+1;
+        cntr = size(pointViewMatrix,2)+1;
 
         if frame == size(frames,3)
             for i = 1:cur_num_points            % fill in non used values   
                 if(~ismember(i,IB))
-                    measurementMatrix((frame+1)*2-3:(frame+1)*2-2,cntr) = bestMatches(i,1:2,frame)';
-                    measurementMatrix(1:2,cntr) = bestMatches(i,3:4,frame)';                
+                    pointViewMatrix((frame+1)*2-3:(frame+1)*2-2,cntr) = bestMatches(i,1:2,frame)';
+                    pointViewMatrix(1:2,cntr) = bestMatches(i,3:4,frame)';                
                     bestMatches(i,7,frame) = cntr;
                     cntr = cntr+1;
                 end   
@@ -58,7 +58,7 @@ function [measurementMatrix, bestMatches] = createMeasurementMatrix(bestMatches,
         else
             for i = 1:cur_num_points            % fill in non used values   
                 if(~ismember(i,IB))
-                    measurementMatrix((frame+1)*2-3:(frame+1)*2,cntr) = bestMatches(i,1:4,frame)';                
+                    pointViewMatrix((frame+1)*2-3:(frame+1)*2,cntr) = bestMatches(i,1:4,frame)';                
                     bestMatches(i,7,frame) = cntr;
                     cntr = cntr+1;
                 end   
@@ -87,7 +87,7 @@ matches = [IA IB];
 
 
 for i = 1:length(IA) 
-    measurementMatrix(3:4,bestMatches(IA(i),7,size(bestMatches,3))) = bestMatches(IB(i),3:4,frame)';        
+    pointViewMatrix(3:4,bestMatches(IA(i),7,size(bestMatches,3))) = bestMatches(IB(i),3:4,frame)';        
 end   
 
 
