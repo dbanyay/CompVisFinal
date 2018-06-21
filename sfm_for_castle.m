@@ -1,4 +1,4 @@
-function [S_matrix, correspond_indexes, RGBvalues] = sfm_for_castle(pointViewMatrix)
+function [S_matrix, correspond_indexes, RGBvalues] = sfm_for_castle(pointViewMatrix,Imf)
 
 [m2,n] = size(pointViewMatrix);
 
