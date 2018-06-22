@@ -45,11 +45,4 @@ for i = 1:2:m2-3
     count = count + 1;
 end
 
-
-
-
-
-
-
-
 end

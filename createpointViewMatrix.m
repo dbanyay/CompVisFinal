@@ -91,10 +91,5 @@ for i = 1:length(IA)
 end   
 
 
-     
-    
-    
-% save('measurementMatrix','measurementMatrix')
-% save('bestMatches','bestMatches')
 end
 

@@ -2,7 +2,7 @@ function inlier_index = RANSAC_Fundamental(coord_img1, coord_img2, p_i, p_i_prim
 
     nummatches = 8;
     
-    for repeat = 1:100
+    for repeat = 1:50
         %pick 8 point correspondences randomly to construct a fundamental
         %matrix F (denormalized F)
 
