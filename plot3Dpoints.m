@@ -32,4 +32,18 @@ while count < length(S_matrix)
     count = count + 1;
 end
 
+S_concat = S_transformed{1};
+
+for i = 2:size(bestMatches,3)
+    S_concat = [S_concat S_transformed{i}];
+end
+
+RGB_concat = RGBvalues{1};
+
+for i = 2:size(bestMatches,3)
+    RGB_concat = [RGB_concat RGBvalues{i}];
+end
+
+end
+
 

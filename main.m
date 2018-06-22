@@ -47,7 +47,9 @@ pointViewMatrix = createpointViewMatrix(bestMatches,frames,descs);
 %% Stitching
 
 % [M,S] = estimate_3D_points(measurementMatrix,Imf);
+
 [S_matrix, correspond_indexes, RGBvalues] = sfm_for_castle(pointViewMatrix,Imf);
+
 plot3Dpoints(S_matrix, correspond_indexes, RGBvalues);
 
 %% Apply bundle adjustment
