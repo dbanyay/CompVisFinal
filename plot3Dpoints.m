@@ -1,4 +1,4 @@
-function plot3Dpoints(S_matrix, correspond_indexes, RGBvalues)
+function [S_concat,RGB_concat] = plot3Dpoints(S_matrix, correspond_indexes, RGBvalues)
 
 hold on
 for point = 1:size(S_matrix{1},2)
@@ -34,13 +34,13 @@ end
 
 S_concat = S_transformed{1};
 
-for i = 2:size(bestMatches,3)
+for i = 2:size(S_matrix,2)
     S_concat = [S_concat S_transformed{i}];
 end
 
 RGB_concat = RGBvalues{1};
 
-for i = 2:size(bestMatches,3)
+for i = 2:size(S_matrix,2)
     RGB_concat = [RGB_concat RGBvalues{i}];
 end
 
