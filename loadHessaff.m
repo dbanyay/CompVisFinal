@@ -6,19 +6,16 @@ cntr = 1;
 %% Load Castle
 
 for num = 586:604
-    %imageLoc = ['model_castle_small_features\8ADT8' num2str(num) '.ppm.harhes'];
     
-    imageLoc = ['modelCastle_features\8ADT8' num2str(num) '.png.haraff.sift'];
+    imageLoc = ['model_castle_features_m\8ADT8' num2str(num) '.ppm.hesaff.sift'];
 
     impoints = importdata(imageLoc, ' ',2);
     impoints = impoints.data';
 
     frame1 = impoints(1:5,:);
     desc1 = impoints(6:end,:);
-%     frames(1:size(frame,1),1:size(frame,2),cntr)=frame;
-%     descs(1:size(desc,1),1:size(desc,2),cntr)=desc;
     
-    imageLoc = ['modelCastle_features\8ADT8' num2str(num) '.png.haraff.sift'];
+    imageLoc = ['model_castle_features_m\8ADT8' num2str(num) '.ppm.haraff.sift'];
     
     impoints = importdata(imageLoc, ' ',2);
     impoints = impoints.data';
@@ -26,9 +23,16 @@ for num = 586:604
     frame2 = impoints(1:5,:);
     desc2 = impoints(6:end,:);
     
+    imageLoc = ['model_castle_features_m\8ADT8' num2str(num) '.ppm.harhes.sift'];
     
-    frames(:,1:size(frame1,2)+size(frame2,2),cntr) = [frame1 frame2];
-    descs(:,1:size(desc1,2)+size(desc2,2),cntr) = [desc1 desc2];
+    impoints = importdata(imageLoc, ' ',2);
+    impoints = impoints.data';
+
+    frame3 = impoints(1:5,:);
+    desc3 = impoints(6:end,:);
+    
+    frames(:,1:size(frame1,2)+size(frame2,2)+size(frame3,2),cntr) = [frame1 frame2 frame3];
+    descs(:,1:size(desc1,2)+size(desc2,2)+size(desc3,2),cntr) = [desc1 desc2 desc3];
     
     cntr = cntr + 1;
 
@@ -36,27 +40,41 @@ end
 
 %% Load Teddybear
 
-% for num = 1:20
+% for num = 1:16
 %     %imageLoc = ['model_castle_small_features\8ADT8' num2str(num) '.ppm.harhes'];
 %     
-%     imageLoc = ['teddybear_features\obj02_0' num2str(num, '%02d') '.png.harhes.sift'];
+%     imageLoc = ['teddybear_features_m\obj02_0' num2str(cntr, '%02d') '.ppm.harhes.sift'];
 % 
 %     impoints = importdata(imageLoc, ' ',2);
 %     impoints = impoints.data';
 % 
+%     frame1 = impoints(1:5,:);
+%     desc1 = impoints(6:end,:);
+%     
+%     imageLoc = ['teddybear_features_m\obj02_0' num2str(cntr, '%02d') '.ppm.haraff.sift'];
+%     
+%     impoints = importdata(imageLoc, ' ',2);
+%     impoints = impoints.data';
 % 
-%     frame = impoints(1:5,:);
-%     desc = impoints(6:end,:);
-%     frames(1:size(frame,1),1:size(frame,2),cntr)=frame;
-%     descs(1:size(desc,1),1:size(desc,2),cntr)=desc;
+%     frame2 = impoints(1:5,:);
+%     desc2 = impoints(6:end,:);
+%     
+%     imageLoc = ['teddybear_features_m\obj02_0' num2str(cntr, '%02d') '.ppm.hesaff.sift'];
+%     
+%     impoints = importdata(imageLoc, ' ',2);
+%     impoints = impoints.data';
+% 
+%     frame3 = impoints(1:5,:);
+%     desc3 = impoints(6:end,:);
+%     
+%     
+%     frames(:,1:size(frame1,2)+size(frame2,2)+size(frame3,2),cntr) = [frame1 frame2 frame3];
+%     descs(:,1:size(desc1,2)+size(desc2,2)+size(desc3,2),cntr) = [desc1 desc2 desc3];
+%     
 %     cntr = cntr + 1;
+% 
 % end
 
-
-
-
-% save('frames','frames')
-% save('descs','descs')
 
 end
 
