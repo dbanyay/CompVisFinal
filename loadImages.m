@@ -6,25 +6,9 @@ cntr = 1;
 
 
 %% For castle
-% for num = 586:604
-%     %imageLoc = ['model_castle_small\8ADT8' num2str(num) '.JPG'];
-%     imageLoc = ['model_castle\8ADT8' num2str(num) '.JPG'];
-%     im = imread(imageLoc);
-%     %imwrite(im, ['8ADT8' num2str(num) '.ppm']);
-%     if num == 1
-%         Imf=zeros(size(im,1),size(im,2),3,19);
-%     end
-%     Imf(:,:,:,cntr)=im;
-%     cntr = cntr + 1;
-% 
-% end
-
-
-
-%% For teddybear
-for num = 1:20
-
-    imageLoc = ['teddybear\obj02_0' num2str(num, '%02d') '.png'];
+for num = 586:604
+    %imageLoc = ['model_castle_small\8ADT8' num2str(num) '.JPG'];
+    imageLoc = ['modelCastle_features\8ADT8' num2str(num) '.png'];
     im = imread(imageLoc);
     %imwrite(im, ['8ADT8' num2str(num) '.ppm']);
     if num == 1
@@ -34,7 +18,23 @@ for num = 1:20
     cntr = cntr + 1;
 
 end
-Imf = uint8(Imf);
+
+
+
+%% For teddybear
+% for num = 1:20
+% 
+%     imageLoc = ['teddybear\obj02_0' num2str(num, '%02d') '.png'];
+%     im = imread(imageLoc);
+%     %imwrite(im, ['8ADT8' num2str(num) '.ppm']);
+%     if num == 1
+%         Imf=zeros(size(im,1),size(im,2),3,19);
+%     end
+%     Imf(:,:,:,cntr)=im;
+%     cntr = cntr + 1;
+% 
+% end
+% Imf = uint8(Imf);
 
 %save('Imf','Imf')
 

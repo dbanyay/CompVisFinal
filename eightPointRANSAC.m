@@ -18,7 +18,7 @@ for frame = 1:size(frames,3)
         desc2 = descs(:,:,frame+1);
     end
 
-    [matches, scores] = vl_ubcmatch(desc1, desc2, 1); %1.5 is default threshold
+    [matches, scores] = vl_ubcmatch(desc1, desc2, 1.5); %1.5 is default threshold
 
     nummatches = max(size(matches));
 

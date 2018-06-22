@@ -1,9 +1,9 @@
 clear all
 close all
 
- load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
- load('c2_descs')
- load('c2_frames')
+%  load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+%  load('c2_descs')
+%  load('c2_frames')
 %  load('b_bestMatches')
 %  load('measurementMatrix')
 %  load('S_matrix')
@@ -22,13 +22,13 @@ close all
 
 %% Load images
 
-%Imf = loadImages();
+Imf = loadImages();
 
 %% Feature detection and extraction of SIFT points
 
 %[frames, descs] = extractSIFT(Imf); % using vl_feat
 
-%[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
+[frames, descs] = loadHessaff(); % using Hessian deterctor + SIFT descriptors
 
 % load('descs_teddy')
 % load('frames_teddy')
@@ -36,8 +36,8 @@ close all
 
 %% Apply normalized 8-point RANSAC and find best matches
 
-% bestMatches = eightPointRANSAC(Imf,frames,descs);
-load('c2_bestMatches');
+bestMatches = eightPointRANSAC(Imf,frames,descs);
+% load('c2_bestMatches');
 % load('b_bestMatches');
 
 %% Chaining
