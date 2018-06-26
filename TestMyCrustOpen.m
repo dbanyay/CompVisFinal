@@ -24,8 +24,11 @@ close all
 % load bear
 % load b_RGB
 
-load castle
-load castle_RGB
+% load castle
+% load castle_RGB
+
+load castlesift
+load RGBcastlesift
 
 p = S_concat';
 

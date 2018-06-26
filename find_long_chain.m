@@ -15,7 +15,7 @@ if size(M,1) ~= 0
     for j = 1:n
            if nnz(~(M_original(:,j))) == 0
                 long_chain_index(count_found) = j; %store index of long chain
-                M_set(1:num_of_chain,count_found) = M_original(:,j);
+                M_set(1:num_of_chain,count_found) = M_original(1:num_of_chain,j);
                 count_found = count_found + 1;
            end
     end

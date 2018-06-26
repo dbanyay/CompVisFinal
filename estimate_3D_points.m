@@ -1,5 +1,5 @@
 function [M, S, RGBvalues, short_chain_index] = estimate_3D_points(M,Imf,frame)
-
+frame
 [m2,n] = size(M);
 %save original M
 M_original = M;

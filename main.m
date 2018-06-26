@@ -3,12 +3,16 @@ close all
 
 %% Load files
 
- load('cm_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
- load('c2_descs')
- load('c2_frames')
- load('c2_bestMatches')
- load('c2_measurementMatrix')
- pointViewMatrix = measurementMatrix;
+load('cm_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+load('cs_descs')
+load('cs_frames')
+% load('cs_bestMaches')
+% load('cs_pointViewMatrix')
+%  load('c2_descs')
+%  load('c2_frames')
+%  load('c2_bestMatches')
+%  load('c2_measurementMatrix')
+%  pointViewMatrix = measurementMatrix;
 %  load('S_matrix')
 %  load('RGBvalues')
 
@@ -27,29 +31,29 @@ close all
 starttime=clock; % start measuring time
 
 
-% % Load images
+% Load images
 % tic
 % Imf = loadImages();
 % fprintf('Load images: %4.4f s\n',toc)
-% 
-% % Feature detection and extraction of SIFT points
+
+% Feature detection and extraction of SIFT points
 % 
 % tic
-% [frames, descs] = loadHessaff(); 
+% [frames, descs] = loadHessaff(Imf); 
 % fprintf('Load frames and descriptors: %4.4f s\n',toc)
 % 
 % 
 % % Apply normalized 8-point RANSAC and find best matches
-% 
-% tic
-% bestMatches = eightPointRANSAC(Imf,frames,descs);
-% fprintf('Eight Point RANSAC: %4.4f s\n',toc)
-% 
+
+tic
+bestMatches = eightPointRANSAC(Imf,frames,descs);
+fprintf('Eight Point RANSAC: %4.4f s\n',toc)
+
 % % Chaining
-% 
-% tic
-% pointViewMatrix = createpointViewMatrix(bestMatches,frames,descs);
-% fprintf('create Point-View matrix: %4.4f s\n',toc)
+
+tic
+pointViewMatrix = createpointViewMatrix(bestMatches,frames,descs);
+fprintf('create Point-View matrix: %4.4f s\n',toc)
 
 %% Stitching 
 
