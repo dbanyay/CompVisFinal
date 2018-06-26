@@ -51,4 +51,7 @@ end
        M_set = M_set*sqrtm(L);
        S = sqrtm(L)*S;
    end
+   
+   cameraParams = estimateCameraParameters(MC,S);
+   [xyzRefinedPoints,refinedPoses] = bundleAdjustment(S, MC, M_set,cameraParams)
 end
