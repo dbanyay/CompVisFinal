@@ -53,11 +53,11 @@ end
    %bundle adjustment on each subset
    D = MC;
    n = size(S,2);
-   M_new = M_set';
-   MS = [S M_new];
+   MS = [S M_set'];
    f = @(MS)bundle_adjustment(D,MS,n);
    [x,fval] = fminunc(f,MS);
    
    S = x(:,1:n);
 end
+
 
