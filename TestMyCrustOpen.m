@@ -20,9 +20,12 @@ close all
 % load Falangi.mat
 % load Mannequin
 % load cactus.mat
+% 
+% load bear
+% load b_RGB
 
-load bear
-load b_RGB
+load castle
+load castle_RGB
 
 p = S_concat';
 

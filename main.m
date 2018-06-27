@@ -3,18 +3,23 @@ close all
 
 %% Load files
 
- load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+
+% load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
 %  load('c2_descs')
 %  load('c2_frames')
 %  load('b_bestMatches')
 %  load('measurementMatrix')
+
+ load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+ load('c2_descs')
+ load('c2_frames')
+ load('c2_bestMatches')
+%  load('c2_measurementMatrix')
+%  pointViewMatrix = measurementMatrix;
 %  load('S_matrix')
 %  load('RGBvalues')
 
 %  load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
- load('c2_descs')
- load('c2_frames')
- load('c2_bestMatches')
 %  load('measurementMatrix')
 %  load('S_matrix')
 %  load('RGBvalues')
@@ -24,6 +29,7 @@ close all
 
 
 starttime=clock; % start measuring time
+
 
 
 %% Load images
@@ -58,7 +64,7 @@ fprintf('Create structure from motion: %4.4f s\n',toc)
 
 %% 3D plot
 tic
-plot3Dpoints(S_matrix, correspond_indexes, RGBvalues);
+[S_concat,RGB_concat] = plot3Dpoints(S_matrix, correspond_indexes, RGBvalues);
 fprintf('3D cloud: %4.4f s\n',toc)
 
 
