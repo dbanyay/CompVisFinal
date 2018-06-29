@@ -2,25 +2,24 @@ function [S_matrix, correspond_indexes, RGBvalues] = sfm_for_castle(pointViewMat
 
 [m2,n] = size(pointViewMatrix);
 count = 1;
-for i = 1:2:m2-3
+for i = 1:2:m2-1
     switch i
-        case m2-3 
+        case m2-1 
+            M_set(1:2,:) = pointViewMatrix(i:i+1,:);
+            M_set(3:4,:) = pointViewMatrix(1:2,:); %TODO
+            M_long = [pointViewMatrix(i:i+1,:); pointViewMatrix(1:4,:)];
+        case m2-3
             M_set(1:4,:) = pointViewMatrix(i:i+3,:);
-            M_set(5:6,:) = pointViewMatrix(1:2,:); %TODO
-            M_long = [pointViewMatrix(i:i+3,:); pointViewMatrix(1:4,:)];
-        case m2-5
-            M_set(1:4,:) = pointViewMatrix(i:i+3,:);
-            M_set(5:6,:) = pointViewMatrix(1:2,:); %TODO
-            M_long = [pointViewMatrix(i:i+5,:); pointViewMatrix(1:2,:)];
+            M_long = [pointViewMatrix(i:i+3,:); pointViewMatrix(1:2,:)];
         otherwise
-            M_set = pointViewMatrix(i:i+5,:);
-            M_long = pointViewMatrix(i:i+7,:);
+            M_set = pointViewMatrix(i:i+3,:);
+            M_long = pointViewMatrix(i:i+5,:);
     end
-end
+
     
-    [M, S, RGBvalue,short_chain_index] = estimate_3D_points(M_set,Imf,i);
+    [M, S, RGBvalue,short_chain_index] = estimate_3D_points_new(M_set,Imf,i);
     
-    long_chain_index = find_long_chain(M_long,'l');
+    long_chain_index = find_long_chain(M_long,'s');
     if size(long_chain_index,2) > 1
         intersected_index = intersect(short_chain_index,long_chain_index);
         for j = 1:length(intersected_index)
@@ -39,3 +38,4 @@ end
 end
 
 end
+

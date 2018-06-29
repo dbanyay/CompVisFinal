@@ -3,10 +3,10 @@ close all
 
 %% Load files
 
-load('cm_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
-load('cs_descs')
-load('cs_frames')
-% load('cs_bestMaches')
+load('c_Imf') % load image matrix, with colors! 4-D matrix, (x,y,color,frame)
+load('c2_descs')
+load('c2_frames')
+load('c2_bestMatches')
 % load('cs_pointViewMatrix')
 %  load('c2_descs')
 %  load('c2_frames')
@@ -46,7 +46,7 @@ starttime=clock; % start measuring time
 % % Apply normalized 8-point RANSAC and find best matches
 
 tic
-bestMatches = eightPointRANSAC(Imf,frames,descs);
+% bestMatches = eightPointRANSAC(Imf,frames,descs);
 fprintf('Eight Point RANSAC: %4.4f s\n',toc)
 
 % % Chaining

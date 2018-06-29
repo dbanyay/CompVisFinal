@@ -48,20 +48,16 @@ end
         S = pinv(C)*S;
    catch
        warning("affine ambiguity elimination failed")
-       M_set = M_set*sqrtm(L);
-       S = sqrtm(L)*S;
+%        M_set = M_set*sqrtm(L);
+%        S = sqrtm(L)*S;
    end
    
+   %bundle adjustment on each subset
    D = MC;
-   M = M_set;
    n = size(S,2);
-   S0 = S;
-   f = @(S)bundle_adjustment(D,M,S,n);
-   [x,fval] = fminunc(f,S0);
+   MS = [S M_set'];
+   f = @(MS)bundle_adjustment(D,MS,n);
+   [x,fval] = fminunc(f,MS);
    
-   S = x;
-%    D(:,:,1) = MC(1:2,:)';
-%    D(:,:,2) = MC(3:4,:)';
-%    cameraParams = estimateCameraParameters(D,S(1:2,:)');
-%    [xyzRefinedPoints,refinedPoses] = bundleAdjustment(S, MC, M_set,cameraParams);
+   S = x(:,1:n);
 end
