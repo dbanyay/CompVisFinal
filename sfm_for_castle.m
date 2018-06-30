@@ -17,7 +17,11 @@ for i = 1:2:m2-1
     end
 
     
-    [M, S, RGBvalue,short_chain_index] = estimate_3D_points_new(M_set,Imf,i);
+    %[M, S, RGBvalue,short_chain_index] = estimate_3D_points_new(M_set,Imf,i);
+    % using 2 consecutive images for 3D estimation
+    
+    [M, S, RGBvalue,short_chain_index] = estimate_3D_points(M_set,Imf,i);
+    % using 3 consecutive images for 3D estimation
     
     long_chain_index = find_long_chain(M_long,'s');
     if size(long_chain_index,2) > 1
