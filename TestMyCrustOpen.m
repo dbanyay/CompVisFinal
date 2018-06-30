@@ -11,24 +11,13 @@ close all
 
 
 %% Open points cloud:
-% load Nefertiti.mat
-% load Hypersheet.mat
-% load pipes.mat
-% load Monkey2.mat
-% load Foot.mat
-% load HandOliver
-% load Falangi.mat
-% load Mannequin
-% load cactus.mat
-% 
-% load bear
-% load b_RGB
+
+
+load bear2
+load bearRGB
 
 % load castle
 % load castle_RGB
-
-load castlesift
-load RGBcastlesift
 
 p = S_concat';
 

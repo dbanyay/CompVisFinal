@@ -52,11 +52,8 @@ fprintf('create Point-View matrix: %4.4f s\n',toc)
 %% Stitching 
 
 tic
-
 %[S_matrix, correspond_indexes, RGBvalues] = sfm_for_teddy(pointViewMatrix,Imf);
-
 [S_matrix, correspond_indexes, RGBvalues] = sfm_for_castle(pointViewMatrix,Imf);
-
 fprintf('Create structure from motion: %4.4f s\n',toc)
 
 %% 3D plot
